@@ -276,33 +276,6 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-
-# Main login interface
-
-creds = Credentials.from_service_account_file("client_secret.json", scopes=SCOPE)
-client = gspread.authorize(creds)
-# # Google Sheets Auth
-# SCOPE = ["https://www.googleapis.com/auth/spreadsheets"]
-# creds = Credentials.from_service_account_file("client_secret.json", scopes=SCOPE)
-# client = gspread.authorize(creds)
-
-# Connect to the sheets
-sheet = client.open("Toastmasters Attendance")
-members_sheet = sheet.worksheet("Members")
-attendance_sheet = sheet.worksheet("Attendance")
-guest_sheet = sheet.worksheet("Guest")
-meetingcode_sheet = sheet.worksheet("MeetingCode")
-
-
-code_data = meetingcode_sheet.get_all_records()
-MEETING_CODE = None
-
-if code_data:
-    expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S")
-    if datetime.now() <= expiry_time:
-        MEETING_CODE = code_data[0]["Meeting Code"]
-
-
 @st.cache_resource
 def get_logo_base64():
     """Convert logo to base64 for embedding"""
@@ -323,19 +296,19 @@ def init_google_sheets():
         st.error(f"Failed to connect to Google Sheets: {str(e)}")
         return None
 
-# def get_meeting_code(sheet):
-#     """Get active meeting code"""
-#     try:
-#         meetingcode_sheet = sheet.worksheet("MeetingCode")
-#         code_data = meetingcode_sheet.get_all_records()
+def get_meeting_code(sheet):
+    """Get active meeting code"""
+    try:
+        meetingcode_sheet = sheet.worksheet("MeetingCode")
+        code_data = meetingcode_sheet.get_all_records()
         
-#         if code_data:
-#             expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S")
-#             if datetime.now() <= expiry_time:
-#                 return code_data[0]["Meeting Code"]
-#     except Exception:
-#         pass
-#     return None
+        if code_data:
+            expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S")
+            if datetime.now() <= expiry_time:
+                return code_data[0]["Meeting Code"]
+    except Exception:
+        pass
+    return None
 
 def create_or_update_attendance_member(sheet, name, phone, today):
     """Create or update attendance member record"""
@@ -385,7 +358,7 @@ def generate_meeting_code(sheet):
         expiry = datetime.now() + timedelta(hours=2)
         expiry_str = expiry.strftime("%Y-%m-%d %H:%M:%S")
         
-        
+        meetingcode_sheet = sheet.worksheet("MeetingCode")
         meetingcode_sheet.clear()
         meetingcode_sheet.update("A1:B1", [["Meeting Code", "Expiry Timestamp"]])
         meetingcode_sheet.update("A2:B2", [[new_code, expiry_str]])
@@ -424,6 +397,14 @@ st.markdown(f"""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+# Main login interface
+sheet = init_google_sheets()
+if not sheet:
+    st.stop()
+
+MEETING_CODE = get_meeting_code(sheet)
+
 # Login container (now transparent)
 st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
@@ -473,7 +454,7 @@ if st.session_state.login_type == 'member':
                 st.error("❌ Please enter your phone number.")
             else:
                 try:
-                    
+                    members_sheet = sheet.worksheet("Members")
                     member_records = members_sheet.get_all_records()
                     matched = next((m for m in member_records if str(m["Phone Number"]) == str(phone)), None)
                     
@@ -483,7 +464,7 @@ if st.session_state.login_type == 'member':
                         today = datetime.now().strftime("%Y-%m-%d")
                         
                         # Log in flat Attendance sheet
-                        
+                        attendance_sheet = sheet.worksheet("Attendance")
                         attendance_sheet.append_row([timestamp, "Member", name, phone, code])
                         
                         # Create or update Attendance_Member matrix
@@ -526,7 +507,7 @@ else:
                     attendance_sheet.append_row([timestamp, "Guest", name, phone, code])
                     
                     # Log in Guest sheet
-                 
+                    guest_sheet = sheet.worksheet("Guest")
                     guest_sheet.append_row([timestamp, name, email, phone, code])
                     
                     st.success(f"✅ Welcome **{name}**! Thank you for joining us as a guest today.")
@@ -554,9 +535,9 @@ elif admin_pass and admin_pass != "admin123":
 # Show admin actions if authenticated
 if st.session_state.get("admin_authenticated", False):
     st.success("✅ Admin authenticated")
-    
+    sheet = init_google_sheets()
     if st.button("Generate New Meeting Code", key="gen_code"):
-        new_code, expiry_str = generate_meeting_code()
+        new_code, expiry_str = generate_meeting_code(sheet)
         if new_code:
             st.session_state.generated_code = new_code
             st.session_state.code_expiry = expiry_str
