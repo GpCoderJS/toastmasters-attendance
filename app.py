@@ -291,7 +291,7 @@ def init_google_sheets():
         # import json
         # info=json.loads(st.secrets["google_service_account"]["credentials_json"])
 
-        st.write(len(st.secrets["google_service_account"]["private_key"]))
+        # st.write(len(st.secrets["google_service_account"]["private_key"]))
         creds = Credentials.from_service_account_info(dict(st.secrets["google_service_account"]), scopes=SCOPE)
         client = gspread.authorize(creds)   
         sheet = client.open("Toastmasters Attendance")
