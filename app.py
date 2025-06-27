@@ -535,7 +535,7 @@ elif admin_pass and admin_pass != "admin123":
 # Show admin actions if authenticated
 if st.session_state.get("admin_authenticated", False):
     st.success("✅ Admin authenticated")
-
+    sheet = init_google_sheets()
     if st.button("Generate New Meeting Code", key="gen_code"):
         new_code, expiry_str = generate_meeting_code(sheet)
         if new_code:
