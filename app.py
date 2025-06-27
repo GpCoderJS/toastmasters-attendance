@@ -63,16 +63,15 @@ header {visibility: hidden;}
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Login form styling */
+/* Login form styling - REMOVED WHITE BOX */
 .login-container {
-    background: var(--white);
+    background: transparent;
     padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
     max-width: 400px;
     margin: 0 auto;
-    backdrop-filter: blur(10px);
 }
 
 .login-header {
@@ -81,28 +80,41 @@ header {visibility: hidden;}
 }
 
 .login-header h2 {
-    color: var(--primary-blue);
+    color: var(--white);
     margin-bottom: 0.5rem;
     font-size: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .login-header p {
-    color: #666;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 0.9rem;
+}
+
+/* Section headers */
+.section-header {
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 /* Input styling */
 .stTextInput > div > div > input {
-    border: 2px solid var(--light-blue);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     padding: 0.75rem;
     font-size: 1rem;
     transition: border-color 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-dark);
 }
 
 .stTextInput > div > div > input:focus {
     border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3);
+    background: var(--white);
 }
 
 /* Button styling - Updated for new colors */
@@ -157,7 +169,7 @@ header {visibility: hidden;}
 
 /* Success/Error messages */
 .success-message {
-    background: #E8F5E8;
+    background: rgba(232, 245, 232, 0.9);
     border: 1px solid #4CAF50;
     color: #2E7D32;
     padding: 1rem;
@@ -166,7 +178,7 @@ header {visibility: hidden;}
 }
 
 .error-message {
-    background: #FFEBEE;
+    background: rgba(255, 235, 238, 0.9);
     border: 1px solid #F44336;
     color: #C62828;
     padding: 1rem;
@@ -174,42 +186,15 @@ header {visibility: hidden;}
     margin: 1rem 0;
 }
 
-/* Admin panel styling */
+/* Admin panel styling - MOVED TO FOOTER */
 .admin-panel {
     background: rgba(255, 255, 255, 0.95);
     padding: 1.5rem;
     border-radius: 12px;
-    margin: 1rem 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto 1rem auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
-}
-
-/* Admin toggle at bottom */
-.admin-toggle-bottom {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.admin-toggle-bottom .stButton > button {
-    background: rgba(30, 136, 229, 0.9);
-    color: white;
-    border-radius: 50px;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(30, 136, 229, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    width: auto;
-    margin-top: 0;
-}
-
-.admin-toggle-bottom .stButton > button:hover {
-    background: rgba(30, 136, 229, 1);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(30, 136, 229, 0.5);
+    max-width: 500px;
 }
 
 /* Footer styling */
@@ -253,14 +238,9 @@ header {visibility: hidden;}
         white-space: nowrap;
     }
     
-    .admin-toggle-bottom {
-        bottom: 15px;
-        right: 15px;
-    }
-    
-    .admin-toggle-bottom .stButton > button {
-        padding: 0.6rem 1.25rem;
-        font-size: 0.85rem;
+    .admin-panel {
+        margin: 2rem 1rem 1rem 1rem;
+        padding: 1.25rem;
     }
 }
 
@@ -280,6 +260,12 @@ header {visibility: hidden;}
     background: transparent;
     border: none;
     padding: 0;
+}
+
+/* Input labels styling */
+.stTextInput > label {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -412,44 +398,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Admin Panel (shown when toggled)
-if st.session_state.show_admin:
-    st.markdown('<div class="admin-panel">', unsafe_allow_html=True)
-    st.markdown("### 🔐 Admin Controls")
-    
-    admin_pass = st.text_input("Enter Admin Password", type="password", key="admin_pass")
-    
-    # Check password and update authentication state
-    if admin_pass == "admin123":  # Replace with your secure admin password
-        st.session_state.admin_authenticated = True
-    elif admin_pass and admin_pass != "admin123":
-        st.session_state.admin_authenticated = False
-        st.error("❌ Invalid admin password.")
-    
-    # Show admin controls if authenticated
-    if st.session_state.admin_authenticated:
-        st.success("✅ Admin authenticated")
-        
-        sheet = init_google_sheets()
-        if sheet:
-            if st.button("Generate New Meeting Code", key="gen_code"):
-                new_code, expiry_str = generate_meeting_code(sheet)
-                if new_code:
-                    st.session_state.generated_code = new_code
-                    st.session_state.code_expiry = expiry_str
-            
-            # Display generated code persistently
-            if st.session_state.generated_code:
-                st.success(f"✅ **Current Active Code: {st.session_state.generated_code}**")
-                st.info(f"📅 Valid until: {st.session_state.code_expiry}")
-                
-                if st.button("Clear Code Display", key="clear_code"):
-                    st.session_state.generated_code = None
-                    st.session_state.code_expiry = None
-                    st.rerun()
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-
 # Main login interface
 sheet = init_google_sheets()
 if not sheet:
@@ -457,7 +405,7 @@ if not sheet:
 
 MEETING_CODE = get_meeting_code(sheet)
 
-# Login container
+# Login container (now transparent)
 st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
 # Login header
@@ -490,7 +438,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # Member Login Form
 if st.session_state.login_type == 'member':
-    st.markdown("### 👥 Member Check-in")
+    st.markdown('<h3 class="section-header">👥 Member Check-in</h3>', unsafe_allow_html=True)
     
     with st.form("member_form", clear_on_submit=False):
         phone = st.text_input("📱 Phone Number", placeholder="Enter your registered phone number")
@@ -532,7 +480,7 @@ if st.session_state.login_type == 'member':
 
 # Guest Login Form
 else:
-    st.markdown("### 🎯 Guest Check-in")
+    st.markdown('<h3 class="section-header">🎯 Guest Check-in</h3>', unsafe_allow_html=True)
     
     with st.form("guest_form", clear_on_submit=False):
         name = st.text_input("👤 Full Name", placeholder="Enter your full name")
@@ -569,15 +517,52 @@ else:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Footer
+# Admin Panel (MOVED TO FOOTER AREA)
+if st.session_state.show_admin:
+    st.markdown('<div class="admin-panel">', unsafe_allow_html=True)
+    st.markdown("### 🔐 Admin Controls")
+    
+    admin_pass = st.text_input("Enter Admin Password", type="password", key="admin_pass")
+    
+    # Check password and update authentication state
+    if admin_pass == "admin123":  # Replace with your secure admin password
+        st.session_state.admin_authenticated = True
+    elif admin_pass and admin_pass != "admin123":
+        st.session_state.admin_authenticated = False
+        st.error("❌ Invalid admin password.")
+    
+    # Show admin controls if authenticated
+    if st.session_state.admin_authenticated:
+        st.success("✅ Admin authenticated")
+        
+        if sheet:
+            if st.button("Generate New Meeting Code", key="gen_code"):
+                new_code, expiry_str = generate_meeting_code(sheet)
+                if new_code:
+                    st.session_state.generated_code = new_code
+                    st.session_state.code_expiry = expiry_str
+            
+            # Display generated code persistently
+            if st.session_state.generated_code:
+                st.success(f"✅ **Current Active Code: {st.session_state.generated_code}**")
+                st.info(f"📅 Valid until: {st.session_state.code_expiry}")
+                
+                if st.button("Clear Code Display", key="clear_code"):
+                    st.session_state.generated_code = None
+                    st.session_state.code_expiry = None
+                    st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# Footer with Admin Toggle
 st.markdown("""
 <div class="footer">
     <p>Koramangala Toastmasters Club • Weekly Meeting Attendance System</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Admin toggle button at bottom right (floating)
-st.markdown('<div class="admin-toggle-bottom">', unsafe_allow_html=True)
-if st.button("Admin", key="admin_toggle_bottom", help="Admin Controls"):
-    st.session_state.show_admin = not st.session_state.show_admin
-st.markdown('</div>', unsafe_allow_html=True)
+# Admin toggle button - now at footer level
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    if st.button("🔐 Admin Controls", key="admin_toggle", use_container_width=True):
+        st.session_state.show_admin = not st.session_state.show_admin
