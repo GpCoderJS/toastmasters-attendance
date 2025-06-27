@@ -16,20 +16,21 @@ st.set_page_config(
 # Custom CSS for professional UI
 st.markdown("""
 <style>
-/* Main theme colors */
+/* Main theme colors - Modern Dark Blue */
 :root {
-    --primary-blue: #1E88E5;
-    --secondary-blue: #42A5F5;
-    --light-blue: #E3F2FD;
-    --dark-blue: #0D47A1;
+    --primary-blue: #06B6D4;
+    --secondary-blue: #0891B2;
+    --light-blue: #E0F7FA;
+    --dark-blue: #0F172A;
+    --medium-blue: #1E40AF;
     --white: #FFFFFF;
-    --light-gray: #F5F5F5;
-    --text-dark: #212121;
+    --light-gray: #F8FAFC;
+    --text-dark: #1F2937;
 }
 
-/* Body background with gradient */
+/* Body background with dark gradient */
 .stApp {
-    background: linear-gradient(135deg, #1E88E5 0%, #42A5F5 50%, #64B5F6 100%);
+    background: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
     min-height: 100vh;
 }
 
@@ -104,7 +105,7 @@ header {visibility: hidden;}
     box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
 }
 
-/* Button styling */
+/* Button styling - Updated for new colors */
 .stButton > button {
     background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
     color: white;
@@ -120,35 +121,38 @@ header {visibility: hidden;}
 
 .stButton > button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(30, 136, 229, 0.3);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
 }
 
-/* Login type buttons - side by side */
+/* Login type buttons - side by side - FIXED for mobile */
 .login-type-buttons {
-    display: flex;
+    display: flex !important;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
 }
 
 .login-type-buttons .stButton {
-    flex: 1;
+    flex: 1 !important;
+    min-width: 0 !important;
 }
 
 .login-type-buttons .stButton > button {
     margin-top: 0;
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
+    width: 100% !important;
 }
 
-/* Active tab styling */
+/* Active tab styling - Updated colors */
 .active-tab button {
     background: var(--primary-blue) !important;
     color: white !important;
 }
 
 .inactive-tab button {
-    background: var(--light-blue) !important;
-    color: var(--primary-blue) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: var(--white) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
 /* Success/Error messages */
@@ -234,13 +238,19 @@ header {visibility: hidden;}
     }
     
     .login-type-buttons {
-        flex-direction: row;
+        flex-direction: row !important;
         gap: 0.5rem;
+    }
+    
+    .login-type-buttons .stButton {
+        flex: 1 !important;
+        min-width: 0 !important;
     }
     
     .login-type-buttons .stButton > button {
         font-size: 0.85rem;
-        padding: 0.5rem 0.75rem;
+        padding: 0.5rem 0.5rem;
+        white-space: nowrap;
     }
     
     .admin-toggle-bottom {
@@ -397,7 +407,7 @@ st.markdown(f"""
 <div class="header-container">
     <div class="logo-title">
         {logo_html}
-        <h1>Koramangala Toastmasters</h1>
+        <h1>Koramangala Toastmasters Club</h1>
     </div>
 </div>
 """, unsafe_allow_html=True)
