@@ -288,9 +288,9 @@ def get_logo_base64():
 @st.cache_resource
 def init_google_sheets():
     try:
-        import json
-        cr=json.loads(st.secrets["service_account"]["google_service"])
-        creds = Credentials.from_service_account_file(cr, scopes=SCOPE)
+
+        
+        creds = Credentials.from_service_account_file(st.secrets["google_service_account"], scopes=SCOPE)
         client = gspread.authorize(creds)   
         sheet = client.open("Toastmasters Attendance")
         return sheet
