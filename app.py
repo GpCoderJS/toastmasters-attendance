@@ -290,7 +290,7 @@ def init_google_sheets():
     try:
 
         
-        creds = Credentials.from_service_account_file(dict(st.secrets["google_service_account"]), scopes=SCOPE)
+        creds = Credentials.from_service_account_info(dict(st.secrets["google_service_account"]), scopes=SCOPE)
         client = gspread.authorize(creds)   
         sheet = client.open("Toastmasters Attendance")
         return sheet
