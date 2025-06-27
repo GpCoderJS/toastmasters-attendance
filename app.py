@@ -288,8 +288,10 @@ def get_logo_base64():
 @st.cache_resource
 def init_google_sheets():
     try:
-        creds = Credentials.from_service_account_file("client_secret.json", scopes=SCOPE)
-        client = gspread.authorize(creds)
+        import json
+        cr=json.loads(st.secrets["service_account"]["google_service"])
+        creds = Credentials.from_service_account_file(cr, scopes=SCOPE)
+        client = gspread.authorize(creds)   
         sheet = client.open("Toastmasters Attendance")
         return sheet
     except Exception as e:
@@ -405,7 +407,7 @@ if not sheet:
     st.stop()
 
 MEETING_CODE = get_meeting_code(sheet)
-MEETING_CODE="TMA"
+
 # Login container (now transparent)
 st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
