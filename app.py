@@ -518,50 +518,39 @@ else:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Admin Panel (MOVED TO FOOTER AREA)
-if st.session_state.show_admin:
-    st.markdown('<div class="admin-panel">', unsafe_allow_html=True)
-    st.markdown("### 🔐 Admin Controls")
+# --- Admin Panel (Always Visible) ---
+st.markdown('<div class="admin-panel">', unsafe_allow_html=True)
+st.markdown("### 🔐 Admin Controls")
 
-    # If not authenticated, show password input
-    if not st.session_state.admin_authenticated:
-        admin_pass = st.text_input("Enter Admin Password", type="password", key="admin_pass_input")
-        
-        if admin_pass == "admin123":
-            st.session_state.admin_authenticated = True
-            st.success("✅ Admin authenticated")
-        elif admin_pass:
-            st.error("❌ Invalid admin password.")
+# Admin password input
+admin_pass = st.text_input("Enter Admin Password", type="password", key="admin_pass_input")
 
-    # Show admin features if authenticated
-    if st.session_state.admin_authenticated:
-        if sheet:
-            if st.button("Generate New Meeting Code", key="gen_code"):
-                new_code, expiry_str = generate_meeting_code(sheet)
-                if new_code:
-                    st.session_state.generated_code = new_code
-                    st.session_state.code_expiry = expiry_str
+# Check and store authentication state
+if admin_pass == "admin123":
+    st.session_state.admin_authenticated = True
+elif admin_pass and admin_pass != "admin123":
+    st.session_state.admin_authenticated = False
+    st.error("❌ Invalid admin password.")
 
-        # Display the generated token always if present
-        if st.session_state.generated_code:
-            st.success(f"✅ **Current Active Code: {st.session_state.generated_code}**")
-            st.info(f"📅 Valid until: {st.session_state.code_expiry}")
+# Show admin actions if authenticated
+if st.session_state.get("admin_authenticated", False):
+    st.success("✅ Admin authenticated")
 
-            if st.button("Clear Code Display", key="clear_code"):
-                st.session_state.generated_code = None
-                st.session_state.code_expiry = None
-                st.rerun()
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+    if st.button("Generate New Meeting Code", key="gen_code"):
+        new_code, expiry_str = generate_meeting_code(sheet)
+        if new_code:
+            st.session_state.generated_code = new_code
+            st.session_state.code_expiry = expiry_str
 
-# Footer with Admin Toggle
-st.markdown("""
-<div class="footer">
-    <p>Koramangala Toastmasters Club • Weekly Meeting Attendance System</p>
-</div>
-""", unsafe_allow_html=True)
+    if st.session_state.get("generated_code"):
+        st.success(f"✅ **Current Active Code: {st.session_state.generated_code}**")
+        st.info(f"📅 Valid until: {st.session_state.code_expiry}")
 
-# Admin toggle button - now at footer level
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    if st.button("🔐 Admin Controls", key="admin_toggle", use_container_width=True):
-        st.session_state.show_admin = not st.session_state.show_admin
+        if st.button("Clear Code Display", key="clear_code"):
+            st.session_state.generated_code = None
+            st.session_state.code_expiry = None
+            st.rerun()
+else:
+    st.info("🔐 Enter admin password to access token generation.")
+
+st.markdown('</div>', unsafe_allow_html=True)
