@@ -285,7 +285,7 @@ def get_logo_base64():
     except FileNotFoundError:
         return None
 
-@st.cache_resource
+# @st.cache_resource
 def init_google_sheets():
     try:
         creds = Credentials.from_service_account_file("client_secret.json", scopes=SCOPE)
