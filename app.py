@@ -288,17 +288,16 @@ def get_logo_base64():
 @st.cache_resource
 def init_google_sheets():
     try:
-        import json
-        info=json.loads(st.secrets["google_service_account"]["credentials_json"])
+        # import json
+        # info=json.loads(st.secrets["google_service_account"]["credentials_json"])
 
         
-        creds = Credentials.from_service_account_info(info, scopes=SCOPE)
+        creds = Credentials.from_service_account_info(st.secrets["google_service_account"], scopes=SCOPE)
         client = gspread.authorize(creds)   
         sheet = client.open("Toastmasters Attendance")
         return sheet
     except Exception as e:
-        st.error(f"Failed to connect to Google Sheets: {str(e)}")
-        return None
+        raise e
 
 def get_meeting_code(sheet):
     """Get active meeting code"""
