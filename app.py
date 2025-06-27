@@ -405,7 +405,7 @@ if not sheet:
     st.stop()
 
 MEETING_CODE = get_meeting_code(sheet)
-MEETING_CODE="123"
+MEETING_CODE="TMA"
 # Login container (now transparent)
 st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
