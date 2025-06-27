@@ -27,19 +27,25 @@ st.markdown("""
     --text-dark: #212121;
 }
 
+/* Body background with gradient */
+.stApp {
+    background: linear-gradient(135deg, #1E88E5 0%, #42A5F5 50%, #64B5F6 100%);
+    min-height: 100vh;
+}
+
 /* Hide Streamlit elements */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
+.stDeployButton {display: none;}
 
 /* Custom header with logo */
 .header-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 1rem 0;
     margin-bottom: 2rem;
-    border-bottom: 2px solid var(--primary-blue);
 }
 
 .logo-title {
@@ -49,25 +55,23 @@ header {visibility: hidden;}
 }
 
 .logo-title h1 {
-    color: var(--primary-blue);
+    color: var(--white);
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
-}
-
-.admin-corner {
-    position: relative;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 /* Login form styling */
 .login-container {
     background: var(--white);
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(30, 136, 229, 0.1);
-    border: 1px solid var(--light-blue);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     max-width: 400px;
     margin: 0 auto;
+    backdrop-filter: blur(10px);
 }
 
 .login-header {
@@ -119,6 +123,34 @@ header {visibility: hidden;}
     box-shadow: 0 6px 20px rgba(30, 136, 229, 0.3);
 }
 
+/* Login type buttons - side by side */
+.login-type-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.login-type-buttons .stButton {
+    flex: 1;
+}
+
+.login-type-buttons .stButton > button {
+    margin-top: 0;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Active tab styling */
+.active-tab button {
+    background: var(--primary-blue) !important;
+    color: white !important;
+}
+
+.inactive-tab button {
+    background: var(--light-blue) !important;
+    color: var(--primary-blue) !important;
+}
+
 /* Success/Error messages */
 .success-message {
     background: #E8F5E8;
@@ -140,10 +172,48 @@ header {visibility: hidden;}
 
 /* Admin panel styling */
 .admin-panel {
-    background: var(--light-gray);
-    padding: 1rem;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1.5rem;
+    border-radius: 12px;
     margin: 1rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Admin toggle at bottom */
+.admin-toggle-bottom {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.admin-toggle-bottom .stButton > button {
+    background: rgba(30, 136, 229, 0.9);
+    color: white;
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(30, 136, 229, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: auto;
+    margin-top: 0;
+}
+
+.admin-toggle-bottom .stButton > button:hover {
+    background: rgba(30, 136, 229, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 136, 229, 0.5);
+}
+
+/* Footer styling */
+.footer {
+    text-align: center;
+    padding: 2rem 0 1rem 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
 }
 
 /* Mobile responsive */
@@ -162,34 +232,44 @@ header {visibility: hidden;}
         margin: 0 1rem;
         padding: 1.5rem;
     }
+    
+    .login-type-buttons {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    
+    .login-type-buttons .stButton > button {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .admin-toggle-bottom {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .admin-toggle-bottom .stButton > button {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.85rem;
+    }
 }
 
-/* Tab styling for login type */
-.login-tabs {
-    display: flex;
-    background: var(--light-blue);
-    border-radius: 8px;
-    padding: 0.25rem;
-    margin-bottom: 1.5rem;
+/* Remove default Streamlit container padding */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-.login-tab {
-    flex: 1;
-    padding: 0.75rem;
-    text-align: center;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
+/* Hide any white background containers */
+.stContainer {
+    background: transparent !important;
 }
 
-.login-tab.active {
-    background: var(--primary-blue);
-    color: white;
-}
-
-.login-tab:not(.active) {
-    color: var(--primary-blue);
+/* Ensure forms have proper styling */
+.stForm {
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -200,14 +280,14 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-# @st.cache_resource
-# def get_logo_base64():
-#     """Convert logo to base64 for embedding"""
-#     try:
-#         with open("logo.png", "rb") as img_file:
-#             return base64.b64encode(img_file.read()).decode()
-#     except FileNotFoundError:
-#         return None
+@st.cache_resource
+def get_logo_base64():
+    """Convert logo to base64 for embedding"""
+    try:
+        with open("logo.png", "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except FileNotFoundError:
+        return None
 
 @st.cache_resource
 def init_google_sheets():
@@ -304,14 +384,14 @@ if 'generated_code' not in st.session_state:
 if 'code_expiry' not in st.session_state:
     st.session_state.code_expiry = None
 
-# Header with logo (centered, no admin button)
-# logo_base64 = get_logo_base64()
+# Header with logo (centered)
+logo_base64 = get_logo_base64()
 
-# if logo_base64:
-#     logo_html = f'<img src="data:image/png;base64,{logo_base64}" width="50" height="50" style="border-radius: 8px;">'
-# else:
-#     # Fallback to TM icon if logo not found
-logo_html = '<div style="width: 50px; height: 50px; background: linear-gradient(135deg, #1E88E5, #42A5F5); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem;">TM</div>'
+if logo_base64:
+    logo_html = f'<img src="data:image/png;base64,{logo_base64}" width="50" height="50" style="border-radius: 8px;">'
+else:
+    # Fallback to TM icon if logo not found
+    logo_html = '<div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; backdrop-filter: blur(10px);">TM</div>'
 
 st.markdown(f"""
 <div class="header-container">
@@ -322,12 +402,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Hidden admin toggle button for JavaScript interaction
-admin_toggle = st.button("Toggle Admin", key="admin-toggle", help="Admin Controls")
-if admin_toggle:
-    st.session_state.show_admin = not st.session_state.show_admin
-
-# Admin Panel
+# Admin Panel (shown when toggled)
 if st.session_state.show_admin:
     st.markdown('<div class="admin-panel">', unsafe_allow_html=True)
     st.markdown("### 🔐 Admin Controls")
@@ -383,16 +458,25 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Login type tabs
+# Login type tabs - side by side
+st.markdown('<div class="login-type-buttons">', unsafe_allow_html=True)
 col1, col2 = st.columns(2)
-with col1:
-    if st.button("👥 Member Login", key="member_tab", use_container_width=True):
-        st.session_state.login_type = 'member'
-with col2:
-    if st.button("🎯 Guest Login", key="guest_tab", use_container_width=True):
-        st.session_state.login_type = 'guest'
 
-st.markdown("<br>", unsafe_allow_html=True)
+with col1:
+    member_class = "active-tab" if st.session_state.login_type == 'member' else "inactive-tab"
+    st.markdown(f'<div class="{member_class}">', unsafe_allow_html=True)
+    if st.button("👥 Member", key="member_tab", use_container_width=True):
+        st.session_state.login_type = 'member'
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col2:
+    guest_class = "active-tab" if st.session_state.login_type == 'guest' else "inactive-tab"
+    st.markdown(f'<div class="{guest_class}">', unsafe_allow_html=True)
+    if st.button("🎯 Guest", key="guest_tab", use_container_width=True):
+        st.session_state.login_type = 'guest'
+    st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Member Login Form
 if st.session_state.login_type == 'member':
@@ -475,7 +559,7 @@ else:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Footer and Admin Toggle at Bottom
+# Footer
 st.markdown("""
 <div class="footer">
     <p>Koramangala Toastmasters Club • Weekly Meeting Attendance System</p>
