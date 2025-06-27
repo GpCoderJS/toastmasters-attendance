@@ -475,9 +475,15 @@ else:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Footer
+# Footer and Admin Toggle at Bottom
 st.markdown("""
-<div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #E0E0E0; color: #666; font-size: 0.9rem;">
+<div class="footer">
     <p>Koramangala Toastmasters Club • Weekly Meeting Attendance System</p>
 </div>
 """, unsafe_allow_html=True)
+
+# Admin toggle button at bottom right (floating)
+st.markdown('<div class="admin-toggle-bottom">', unsafe_allow_html=True)
+if st.button("Admin", key="admin_toggle_bottom", help="Admin Controls"):
+    st.session_state.show_admin = not st.session_state.show_admin
+st.markdown('</div>', unsafe_allow_html=True)
