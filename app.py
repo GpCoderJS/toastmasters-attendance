@@ -297,8 +297,14 @@ if 'login_type' not in st.session_state:
     st.session_state.login_type = 'member'
 if 'show_admin' not in st.session_state:
     st.session_state.show_admin = False
+if 'admin_authenticated' not in st.session_state:
+    st.session_state.admin_authenticated = False
+if 'generated_code' not in st.session_state:
+    st.session_state.generated_code = None
+if 'code_expiry' not in st.session_state:
+    st.session_state.code_expiry = None
 
-# Header with logo and admin corner
+# Header with logo (centered, no admin button)
 # logo_base64 = get_logo_base64()
 
 # if logo_base64:
@@ -312,9 +318,6 @@ st.markdown(f"""
     <div class="logo-title">
         {logo_html}
         <h1>Koramangala Toastmasters</h1>
-    </div>
-    <div class="admin-corner">
-        <button onclick="document.getElementById('admin-toggle').click()" style="background: none; border: 1px solid #1E88E5; color: #1E88E5; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">Admin</button>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -330,15 +333,35 @@ if st.session_state.show_admin:
     st.markdown("### 🔐 Admin Controls")
     
     admin_pass = st.text_input("Enter Admin Password", type="password", key="admin_pass")
+    
+    # Check password and update authentication state
     if admin_pass == "admin123":  # Replace with your secure admin password
-        sheet = init_google_sheets()
-        if sheet and st.button("Generate New Meeting Code", key="gen_code"):
-            new_code, expiry_str = generate_meeting_code(sheet)
-            if new_code:
-                st.success(f"✅ New code generated: **{new_code}** (valid until {expiry_str})")
-                st.rerun()
-    elif admin_pass:
+        st.session_state.admin_authenticated = True
+    elif admin_pass and admin_pass != "admin123":
+        st.session_state.admin_authenticated = False
         st.error("❌ Invalid admin password.")
+    
+    # Show admin controls if authenticated
+    if st.session_state.admin_authenticated:
+        st.success("✅ Admin authenticated")
+        
+        sheet = init_google_sheets()
+        if sheet:
+            if st.button("Generate New Meeting Code", key="gen_code"):
+                new_code, expiry_str = generate_meeting_code(sheet)
+                if new_code:
+                    st.session_state.generated_code = new_code
+                    st.session_state.code_expiry = expiry_str
+            
+            # Display generated code persistently
+            if st.session_state.generated_code:
+                st.success(f"✅ **Current Active Code: {st.session_state.generated_code}**")
+                st.info(f"📅 Valid until: {st.session_state.code_expiry}")
+                
+                if st.button("Clear Code Display", key="clear_code"):
+                    st.session_state.generated_code = None
+                    st.session_state.code_expiry = None
+                    st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
 
