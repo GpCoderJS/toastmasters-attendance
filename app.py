@@ -289,15 +289,16 @@ def get_logo_base64():
     except FileNotFoundError:
         return None
 
-@st.cache_resource
 def init_google_sheets():
     try:
+        # Try to load credentials without caching first
         creds = Credentials.from_service_account_file("client_secret.json", scopes=SCOPE)
         client = gspread.authorize(creds)
         sheet = client.open("Toastmasters Attendance")
         return sheet
     except Exception as e:
         st.error(f"Failed to connect to Google Sheets: {str(e)}")
+        st.error("Please check if client_secret.json file exists and is valid")
         return None
 
 def get_meeting_code(sheet):
@@ -570,4 +571,4 @@ st.markdown("""
 st.markdown('<div class="admin-toggle-bottom">', unsafe_allow_html=True)
 if st.button("Admin", key="admin_toggle_bottom", help="Admin Controls"):
     st.session_state.show_admin = not st.session_state.show_admin
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)   
