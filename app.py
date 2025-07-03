@@ -5,6 +5,10 @@ from google.oauth2.service_account import Credentials
 import random
 import string
 import base64
+from zoneinfo import ZoneInfo
+import pytz
+
+ist = pytz.timezone('Asia/Kolkata')
 
 # Page config with custom styling
 st.set_page_config(
@@ -306,12 +310,15 @@ def get_meeting_code(sheet):
         code_data = meetingcode_sheet.get_all_records()
         
         if code_data:
-            expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S")
-            if datetime.now() <= expiry_time:
+            
+
+            expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S").replace(tzinfo=ZoneInfo("Asia/Kolkata"))
+            # expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S")
+            if datetime.now(ist) <= expiry_time:
                 return code_data[0]["Meeting Code"]
     except Exception:
-        pass
-    return None
+        raise e
+    
 
 def create_or_update_attendance_member(sheet, name, phone, today):
     """Create or update attendance member record"""
@@ -322,7 +329,7 @@ def create_or_update_attendance_member(sheet, name, phone, today):
         # If sheet is empty, create headers
         if not matrix_data:
             matrix_sheet.update("A1:C1", [["Name", "Phone", today]])
-            matrix_sheet.update("A2:C2", [[name, phone, "1"]])
+            matrix_sheet.update("A2:C2", [[name, phone, 1]])
             return True
             
         headers = matrix_data[0] if matrix_data else ["Name", "Phone"]
@@ -338,7 +345,7 @@ def create_or_update_attendance_member(sheet, name, phone, today):
             if len(row) > 1 and row[1] == phone:  # Match by phone number
                 # Update existing member
                 col_index = headers.index(today) + 1
-                matrix_sheet.update_cell(idx, col_index, "1")
+                matrix_sheet.update_cell(idx, col_index, 1)
                 member_found = True
                 break
         
@@ -346,7 +353,7 @@ def create_or_update_attendance_member(sheet, name, phone, today):
         if not member_found:
             new_row = [name, phone] + [""] * (len(headers) - 2)
             col_index = headers.index(today)
-            new_row[col_index] = "1"
+            new_row[col_index] = 1
             matrix_sheet.append_row(new_row)
             
         return True
@@ -357,8 +364,9 @@ def create_or_update_attendance_member(sheet, name, phone, today):
 def generate_meeting_code(sheet):
     """Generate new meeting code"""
     try:
+        
         new_code = "TM" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-        expiry = datetime.now() + timedelta(hours=2)
+        expiry = datetime.now(ist) + timedelta(hours=2)
         expiry_str = expiry.strftime("%Y-%m-%d %H:%M:%S")
         
         meetingcode_sheet = sheet.worksheet("MeetingCode")
@@ -407,7 +415,7 @@ sheet = init_google_sheets()
 if not sheet:
     st.stop()
 
-MEETING_CODE = get_meeting_code(sheet)
+
 
 # Login container (now transparent)
 st.markdown('<div class="login-container">', unsafe_allow_html=True)
@@ -446,15 +454,12 @@ if st.session_state.login_type == 'member':
     
     with st.form("member_form", clear_on_submit=False):
         phone = st.text_input("📱 Phone Number", placeholder="Enter your registered phone number")
-        code = st.text_input("🔐 Meeting Code", type="password", placeholder="Enter meeting code")
+       
         submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
         
         if submitted:
-            if not MEETING_CODE:
-                st.error("🚫 No active meeting code. Please contact the organizer.")
-            elif code != MEETING_CODE:
-                st.error("❌ Invalid meeting code.")
-            elif not phone.strip():
+            
+            if not phone.strip():
                 st.error("❌ Please enter your phone number.")
             else:
                 try:
@@ -464,12 +469,12 @@ if st.session_state.login_type == 'member':
                     
                     if matched:
                         name = matched["Name"]
-                        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        today = datetime.now().strftime("%Y-%m-%d")
+                        timestamp = datetime.now(ist).strftime("%Y-%m-%d %H:%M:%S")
+                        today = datetime.now(ist).strftime("%Y-%m-%d")
                         
                         # Log in flat Attendance sheet
                         attendance_sheet = sheet.worksheet("Attendance")
-                        attendance_sheet.append_row([timestamp, "Member", name, phone, code])
+                        attendance_sheet.append_row([timestamp, "Member", name, phone, "0000"])
                         
                         # Create or update Attendance_Member matrix
                         if create_or_update_attendance_member(sheet, name, phone, today):
@@ -488,73 +493,32 @@ else:
     
     with st.form("guest_form", clear_on_submit=False):
         name = st.text_input("👤 Full Name", placeholder="Enter your full name")
-        email = st.text_input("📧 Email Address", placeholder="Enter your email address")
+        
         phone = st.text_input("📱 Phone Number", placeholder="Enter your phone number")
-        code = st.text_input("🔐 Meeting Code", type="password", placeholder="Enter meeting code")
+       
         submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
         
         if submitted:
-            if not MEETING_CODE:
-                st.error("🚫 No active meeting code. Please contact the organizer.")
-            elif code != MEETING_CODE:
-                st.error("❌ Invalid meeting code.")
-            elif not name.strip():
+            
+            if not name.strip():
                 st.error("❌ Please enter your name.")
-            elif not email.strip():
+            elif not phone.strip():
                 st.error("❌ Please enter your email address.")
             else:
                 try:
-                    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    timestamp = datetime.now(ist).strftime("%Y-%m-%d %H:%M:%S")
                     
                     # Log in Attendance sheet
                     attendance_sheet = sheet.worksheet("Attendance")
-                    attendance_sheet.append_row([timestamp, "Guest", name, phone, code])
+                    attendance_sheet.append_row([timestamp, "Guest", name, phone, "0000"])
                     
                     # Log in Guest sheet
                     guest_sheet = sheet.worksheet("Guest")
-                    guest_sheet.append_row([timestamp, name, email, phone, code])
+                    guest_sheet.append_row([timestamp, name, "None", phone, "0000"])
                     
                     st.success(f"✅ Welcome **{name}**! Thank you for joining us as a guest today.")
                     
                 except Exception as e:
                     st.error(f"❌ Error processing guest registration: {str(e)}")
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Admin Panel (MOVED TO FOOTER AREA)
-# --- Admin Panel (Always Visible) ---
-st.markdown('<div class="admin-panel">', unsafe_allow_html=True)
-st.markdown("### 🔐 Admin Controls")
-
-# Admin password input
-admin_pass = st.text_input("Enter Admin Password", type="password", key="admin_pass_input")
-
-# Check and store authentication state
-if admin_pass == "admin123":
-    st.session_state.admin_authenticated = True
-elif admin_pass and admin_pass != "admin123":
-    st.session_state.admin_authenticated = False
-    st.error("❌ Invalid admin password.")
-
-# Show admin actions if authenticated
-if st.session_state.get("admin_authenticated", False):
-    st.success("✅ Admin authenticated")
-
-    if st.button("Generate New Meeting Code", key="gen_code"):
-        new_code, expiry_str = generate_meeting_code(sheet)
-        if new_code:
-            st.session_state.generated_code = new_code
-            st.session_state.code_expiry = expiry_str
-
-    if st.session_state.get("generated_code"):
-        st.success(f"✅ **Current Active Code: {st.session_state.generated_code}**")
-        st.info(f"📅 Valid until: {st.session_state.code_expiry}")
-
-        if st.button("Clear Code Display", key="clear_code"):
-            st.session_state.generated_code = None
-            st.session_state.code_expiry = None
-            st.rerun()
-else:
-    st.info("🔐 Enter admin password to access token generation.")
 
 st.markdown('</div>', unsafe_allow_html=True)
