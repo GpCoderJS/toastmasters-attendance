@@ -542,15 +542,19 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Beautiful selection buttons (now functional)
+    # Add selection state tracking
+    if 'selected_type' not in st.session_state:
+        st.session_state.selected_type = None
+    
+    # Beautiful selection buttons (visual + functional)
     st.markdown("""
     <div class="selection-buttons">
-        <div class="selection-button member-button" onclick="selectMember()" id="member-card">
+        <div class="selection-button member-button" id="member-card">
             <div class="icon">👥</div>
             <div class="title">Member</div>
             <div class="subtitle">Registered Members</div>
         </div>
-        <div class="selection-button guest-button" onclick="selectGuest()" id="guest-card">
+        <div class="selection-button guest-button" id="guest-card">
             <div class="icon">🎯</div>
             <div class="title">Guest</div>
             <div class="subtitle">Visitors & New Members</div>
@@ -558,24 +562,18 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Add selection state tracking
-    if 'selected_type' not in st.session_state:
-        st.session_state.selected_type = None
-    
-    # Hidden selection buttons 
-    st.markdown('<div style="display: none;">', unsafe_allow_html=True)
+    # Selection buttons using columns
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Select Member", key="select_member"):
+        if st.button("Select Member", key="select_member", use_container_width=True):
             st.session_state.selected_type = 'member'
             st.rerun()
     with col2:
-        if st.button("Select Guest", key="select_guest"):
+        if st.button("Select Guest", key="select_guest", use_container_width=True):
             st.session_state.selected_type = 'guest'
             st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
     
-    # Show continue button if a type is selected
+    # Show selected state and continue button
     if st.session_state.selected_type:
         st.markdown(f"""
         <div style="text-align: center; margin: 1.5rem 0;">
@@ -595,58 +593,68 @@ if st.session_state.step == 'home':
                 st.session_state.login_type = 'guest'
             st.rerun()
     
-    # JavaScript for card selection
+    # JavaScript for visual feedback
     st.markdown("""
     <script>
-    function selectMember() {
-        // Visual feedback - highlight member card
+    // Add click handlers to cards for visual feedback
+    setTimeout(function() {
         const memberCard = document.getElementById('member-card');
         const guestCard = document.getElementById('guest-card');
+        const buttons = document.querySelectorAll('button');
         
-        memberCard.style.borderColor = '#06B6D4';
-        memberCard.style.borderWidth = '3px';
-        memberCard.style.background = 'rgba(6, 182, 212, 0.15)';
+        // Find the actual streamlit buttons
+        let memberBtn = null;
+        let guestBtn = null;
         
-        guestCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-        guestCard.style.borderWidth = '2px';
-        guestCard.style.background = 'rgba(255, 255, 255, 0.08)';
-        
-        // Click hidden member button
-        setTimeout(() => {
-            const buttons = document.querySelectorAll('button');
-            for (let btn of buttons) {
-                if (btn.textContent.includes('Select Member')) {
-                    btn.click();
-                    break;
-                }
+        for (let btn of buttons) {
+            if (btn.textContent.includes('Select Member')) {
+                memberBtn = btn;
+            } else if (btn.textContent.includes('Select Guest')) {
+                guestBtn = btn;
             }
-        }, 50);
-    }
-    
-    function selectGuest() {
-        // Visual feedback - highlight guest card
-        const memberCard = document.getElementById('member-card');
-        const guestCard = document.getElementById('guest-card');
+        }
         
-        guestCard.style.borderColor = '#06B6D4';
-        guestCard.style.borderWidth = '3px';
-        guestCard.style.background = 'rgba(6, 182, 212, 0.15)';
+        // Add click handlers to cards
+        if (memberCard && memberBtn) {
+            memberCard.onclick = function() {
+                // Visual feedback
+                memberCard.style.borderColor = '#06B6D4';
+                memberCard.style.borderWidth = '3px';
+                memberCard.style.background = 'rgba(6, 182, 212, 0.15)';
+                
+                guestCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                guestCard.style.borderWidth = '2px';
+                guestCard.style.background = 'rgba(255, 255, 255, 0.08)';
+                
+                // Click the hidden button
+                memberBtn.click();
+            };
+        }
         
-        memberCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-        memberCard.style.borderWidth = '2px';
-        memberCard.style.background = 'rgba(255, 255, 255, 0.08)';
+        if (guestCard && guestBtn) {
+            guestCard.onclick = function() {
+                // Visual feedback
+                guestCard.style.borderColor = '#06B6D4';
+                guestCard.style.borderWidth = '3px';
+                guestCard.style.background = 'rgba(6, 182, 212, 0.15)';
+                
+                memberCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                memberCard.style.borderWidth = '2px';
+                memberCard.style.background = 'rgba(255, 255, 255, 0.08)';
+                
+                // Click the hidden button
+                guestBtn.click();
+            };
+        }
         
-        // Click hidden guest button
-        setTimeout(() => {
-            const buttons = document.querySelectorAll('button');
-            for (let btn of buttons) {
-                if (btn.textContent.includes('Select Guest')) {
-                    btn.click();
-                    break;
-                }
-            }
-        }, 50);
-    }
+        // Hide the streamlit buttons
+        if (memberBtn) {
+            memberBtn.style.display = 'none';
+        }
+        if (guestBtn) {
+            guestBtn.style.display = 'none';
+        }
+    }, 200);
     </script>
     """, unsafe_allow_html=True)
 
