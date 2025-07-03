@@ -702,11 +702,6 @@ elif st.session_state.step == 'success':
     </div>
     """, unsafe_allow_html=True)
     
-    # Option to sign in someone else
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    if st.button("➕ Sign in another person", key="another_person", use_container_width=True):
-        st.session_state.step = 'home'
-        st.session_state.user_name = None
-        st.rerun()
+
 
 st.markdown('</div>', unsafe_allow_html=True)
