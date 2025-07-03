@@ -522,52 +522,26 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Selection buttons using columns for better control
-    col1, col2 = st.columns(2)
+    # Hidden buttons for functionality
+    if st.button("member_hidden", key="member_select", type="primary"):
+        st.session_state.step = 'member_login'
+        st.session_state.login_type = 'member'
+        st.rerun()
     
-    with col1:
-        if st.button("", key="member_select", help="For registered members"):
-            st.session_state.step = 'member_login'
-            st.session_state.login_type = 'member'
-            st.rerun()
-        # Custom styling for this button
-        st.markdown("""
-        <style>
-        button[data-testid="baseButton-secondary"]:first-of-type {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 2px solid rgba(255, 255, 255, 0.2) !important;
-            border-radius: 12px !important;
-            padding: 1.5rem 1rem !important;
-            height: 100px !important;
-            width: 100% !important;
-            position: relative !important;
-        }
-        button[data-testid="baseButton-secondary"]:first-of-type:before {
-            content: "👥\\A Member\\A Sign In" !important;
-            white-space: pre !important;
-            color: white !important;
-            font-size: 1rem !important;
-            font-weight: 600 !important;
-            line-height: 1.4 !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+    if st.button("guest_hidden", key="guest_select", type="primary"):
+        st.session_state.step = 'guest_login'
+        st.session_state.login_type = 'guest'
+        st.rerun()
     
-    with col2:
-        if st.button("", key="guest_select", help="For guests and visitors"):
-            st.session_state.step = 'guest_login'
-            st.session_state.login_type = 'guest'
-            st.rerun()
-    
-    # Use HTML buttons for better control
+    # Custom HTML buttons with JavaScript
     st.markdown("""
     <div class="selection-buttons">
-        <div class="selection-button" onclick="document.querySelector('[data-testid=\\"baseButton-secondary\\"]').click()">
+        <div class="selection-button" onclick="clickMemberButton()">
             <div class="icon">👥</div>
             <div class="title">Member</div>
             <div class="subtitle">Registered Members</div>
         </div>
-        <div class="selection-button" onclick="document.querySelector('[data-testid=\\"baseButton-secondary\\"][data-testid=\\"baseButton-secondary\\"]').click()">
+        <div class="selection-button" onclick="clickGuestButton()">
             <div class="icon">🎯</div>
             <div class="title">Guest</div>
             <div class="subtitle">Visitors & New Members</div>
@@ -575,14 +549,36 @@ if st.session_state.step == 'home':
     </div>
     
     <script>
-    setTimeout(function() {
-        document.querySelectorAll('.selection-button')[0].onclick = function() {
-            document.querySelector('button[key="member_select"]').click();
-        };
-        document.querySelectorAll('.selection-button')[1].onclick = function() {
-            document.querySelector('button[key="guest_select"]').click();
-        };
-    }, 100);
+    function clickMemberButton() {
+        // Find and click the hidden member button
+        const buttons = parent.document.querySelectorAll('button[kind="primary"]');
+        for (let button of buttons) {
+            if (button.textContent.includes('member_hidden')) {
+                button.click();
+                break;
+            }
+        }
+    }
+    
+    function clickGuestButton() {
+        // Find and click the hidden guest button
+        const buttons = parent.document.querySelectorAll('button[kind="primary"]');
+        for (let button of buttons) {
+            if (button.textContent.includes('guest_hidden')) {
+                button.click();
+                break;
+            }
+        }
+    }
+    
+    // Hide the actual Streamlit buttons
+    const style = document.createElement('style');
+    style.innerHTML = `
+        button[kind="primary"] {
+            display: none !important;
+        }
+    `;
+    document.head.appendChild(style);
     </script>
     """, unsafe_allow_html=True)
 
@@ -590,7 +586,7 @@ if st.session_state.step == 'home':
 elif st.session_state.step == 'member_login':
     col_back, col_space = st.columns([1, 3])
     with col_back:
-        if st.button("← Back", key="back_member", help="Go back to home"):
+        if st.button("← Back", key="back_member"):
             st.session_state.step = 'home'
             st.rerun()
     
@@ -640,7 +636,7 @@ elif st.session_state.step == 'member_login':
 elif st.session_state.step == 'guest_login':
     col_back, col_space = st.columns([1, 3])
     with col_back:
-        if st.button("← Back", key="back_guest", help="Go back to home"):
+        if st.button("← Back", key="back_guest"):
             st.session_state.step = 'home'
             st.rerun()
     
@@ -700,7 +696,7 @@ elif st.session_state.step == 'success':
     # Voting link section
     st.markdown("""
     <div class="voting-link-container">
-        <a href="https://forms.gle/eEFE3ZdZSMK6Vdf5A" 
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNHGjYnh5RshuJIZ_wy0xM5Lsac4Vvqie9h-gUb572jljdKA/viewform" 
            target="_blank" class="voting-link-button">
             🗳️ &nbsp; Vote for Best Speaker
         </a>
