@@ -363,31 +363,60 @@ header {visibility: hidden;}
     padding-bottom: 2rem;
 }
 
-/* Custom styling for home page buttons */
-div[data-testid="column"]:first-child button,
-div[data-testid="column"]:last-child button {
+/* Selection buttons - RESTORED ORIGINAL DESIGN */
+.selection-buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem;
+}
+
+.selection-button {
     background: rgba(255, 255, 255, 0.08) !important;
     border: 2px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 12px !important;
     padding: 1.5rem 1rem !important;
-    height: 120px !important;
-    width: 100% !important;
-    color: white !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    line-height: 1.4 !important;
-    white-space: pre-line !important;
     text-align: center !important;
+    cursor: pointer !important;
     transition: all 0.3s ease !important;
     backdrop-filter: blur(10px) !important;
+    color: var(--white) !important;
+    text-decoration: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    min-height: 100px !important;
 }
 
-div[data-testid="column"]:first-child button:hover,
-div[data-testid="column"]:last-child button:hover {
+.selection-button:hover {
     background: rgba(6, 182, 212, 0.2) !important;
     border-color: var(--primary-blue) !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
+}
+
+.selection-button .icon {
+    font-size: 2rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.selection-button .title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.selection-button .subtitle {
+    font-size: 0.85rem !important;
+    opacity: 0.8 !important;
+}
+
+/* Hide hidden buttons */
+button[type="submit"]:contains("_hidden"),
+button:contains("member_hidden"),
+button:contains("guest_hidden") {
+    display: none !important;
 }
 
 /* Hide any white background containers and forms */
@@ -532,11 +561,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Initialize Google Sheets
-sheet = init_google_sheets()
-if not sheet:
-    st.stop()
-
 # Main container
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
@@ -568,18 +592,70 @@ if st.session_state.step == 'home':
         st.session_state.guest_clicked = False
         st.rerun()
     
-    # Custom selection buttons
-    col1, col2 = st.columns(2)
+    # Beautiful custom selection buttons (original design)
+    st.markdown("""
+    <div class="selection-buttons">
+        <div class="selection-button" onclick="window.parent.postMessage({type: 'member_click'}, '*')">
+            <div class="icon">👥</div>
+            <div class="title">Member</div>
+            <div class="subtitle">Registered Members</div>
+        </div>
+        <div class="selection-button" onclick="window.parent.postMessage({type: 'guest_click'}, '*')">
+            <div class="icon">🎯</div>
+            <div class="title">Guest</div>
+            <div class="subtitle">Visitors & New Members</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
+    # Hidden streamlit buttons for functionality
+    col1, col2 = st.columns(2)
     with col1:
-        if st.button("👥\n\nMember\n\nRegistered Members", key="member_select", use_container_width=True):
+        if st.button("member_hidden", key="member_select", type="primary"):
             st.session_state.member_clicked = True
             st.rerun()
-    
     with col2:
-        if st.button("🎯\n\nGuest\n\nVisitors & New Members", key="guest_select", use_container_width=True):
+        if st.button("guest_hidden", key="guest_select", type="primary"):
             st.session_state.guest_clicked = True
             st.rerun()
+    
+    # JavaScript to connect custom buttons to hidden streamlit buttons
+    st.markdown("""
+    <script>
+    // Listen for messages from custom buttons
+    window.addEventListener('message', function(event) {
+        if (event.data.type === 'member_click') {
+            // Find and click the hidden member button
+            const buttons = document.querySelectorAll('button');
+            for (let button of buttons) {
+                if (button.textContent.includes('member_hidden')) {
+                    button.click();
+                    break;
+                }
+            }
+        } else if (event.data.type === 'guest_click') {
+            // Find and click the hidden guest button
+            const buttons = document.querySelectorAll('button');
+            for (let button of buttons) {
+                if (button.textContent.includes('guest_hidden')) {
+                    button.click();
+                    break;
+                }
+            }
+        }
+    });
+    
+    // Hide the streamlit buttons
+    setTimeout(function() {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            if (button.textContent.includes('_hidden')) {
+                button.style.display = 'none';
+            }
+        });
+    }, 100);
+    </script>
+    """, unsafe_allow_html=True)
 
 # MEMBER LOGIN STEP
 elif st.session_state.step == 'member_login':
