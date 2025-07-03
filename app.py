@@ -261,30 +261,44 @@ header {visibility: hidden;}
     text-align: center;
 }
 
-/* Voting link button */
-.voting-link-container {
-    margin-top: 2rem;
-    text-align: center;
+/* Voting link button - Force white text */
+.voting-link-container a,
+.voting-link-container a:link,
+.voting-link-container a:visited,
+.voting-link-container a:hover,
+.voting-link-container a:active,
+.voting-link-container a:focus {
+    color: white !important;
+    text-decoration: none !important;
 }
 
 .voting-link-button {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--success-green), #059669);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    display: inline-block !important;
+    background: linear-gradient(135deg, var(--success-green), #059669) !important;
+    color: white !important;
+    padding: 1rem 2rem !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
 }
 
 .voting-link-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-    text-decoration: none;
-    color: white;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4) !important;
+    text-decoration: none !important;
+    color: white !important;
+}
+
+/* Additional override for any Streamlit link styling */
+.stMarkdown a {
+    color: white !important;
+}
+
+.stMarkdown a:hover {
+    color: white !important;
 }
 
 /* Back button */
@@ -363,60 +377,10 @@ header {visibility: hidden;}
     padding-bottom: 2rem;
 }
 
-/* Selection buttons - RESTORED ORIGINAL DESIGN */
-.selection-buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 1rem !important;
-    margin-bottom: 2rem;
-}
-
-.selection-button {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 2px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 12px !important;
-    padding: 1.5rem 1rem !important;
-    text-align: center !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    backdrop-filter: blur(10px) !important;
-    color: var(--white) !important;
-    text-decoration: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    min-height: 100px !important;
-}
-
-.selection-button:hover {
-    background: rgba(6, 182, 212, 0.2) !important;
-    border-color: var(--primary-blue) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
-}
-
-.selection-button .icon {
-    font-size: 2rem !important;
-    margin-bottom: 0.5rem !important;
-}
-
-.selection-button .title {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 0.25rem !important;
-}
-
-.selection-button .subtitle {
-    font-size: 0.85rem !important;
-    opacity: 0.8 !important;
-}
-
-/* Hide hidden buttons */
-button[type="submit"]:contains("_hidden"),
-button:contains("member_hidden"),
-button:contains("guest_hidden") {
-    display: none !important;
+/* Voting link container */
+.voting-link-container {
+    margin-top: 2rem;
+    text-align: center;
 }
 
 /* Hide any white background containers and forms */
@@ -561,7 +525,12 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Main container
+# Initialize Google Sheets
+sheet = init_google_sheets()
+if not sheet:
+    st.stop()
+
+# Main container starts here
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
 # HOME STEP
@@ -595,12 +564,12 @@ if st.session_state.step == 'home':
     # Beautiful custom selection buttons (original design)
     st.markdown("""
     <div class="selection-buttons">
-        <div class="selection-button" onclick="window.parent.postMessage({type: 'member_click'}, '*')">
+        <div class="selection-button member-button">
             <div class="icon">👥</div>
             <div class="title">Member</div>
             <div class="subtitle">Registered Members</div>
         </div>
-        <div class="selection-button" onclick="window.parent.postMessage({type: 'guest_click'}, '*')">
+        <div class="selection-button guest-button">
             <div class="icon">🎯</div>
             <div class="title">Guest</div>
             <div class="subtitle">Visitors & New Members</div>
@@ -608,7 +577,24 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Hidden streamlit buttons for functionality
+    # Hidden streamlit buttons for functionality - using CSS to hide them
+    st.markdown("""
+    <style>
+    /* Hide hidden buttons completely */
+    button[kind="primary"] {
+        display: none !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     col1, col2 = st.columns(2)
     with col1:
         if st.button("member_hidden", key="member_select", type="primary"):
@@ -622,38 +608,51 @@ if st.session_state.step == 'home':
     # JavaScript to connect custom buttons to hidden streamlit buttons
     st.markdown("""
     <script>
-    // Listen for messages from custom buttons
-    window.addEventListener('message', function(event) {
-        if (event.data.type === 'member_click') {
-            // Find and click the hidden member button
-            const buttons = document.querySelectorAll('button');
-            for (let button of buttons) {
-                if (button.textContent.includes('member_hidden')) {
-                    button.click();
-                    break;
-                }
-            }
-        } else if (event.data.type === 'guest_click') {
-            // Find and click the hidden guest button
-            const buttons = document.querySelectorAll('button');
-            for (let button of buttons) {
-                if (button.textContent.includes('guest_hidden')) {
-                    button.click();
-                    break;
-                }
-            }
-        }
-    });
-    
-    // Hide the streamlit buttons
+    // Direct click handlers for custom buttons
     setTimeout(function() {
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(button => {
-            if (button.textContent.includes('_hidden')) {
-                button.style.display = 'none';
+        // Get custom buttons
+        const memberBtn = document.querySelector('.selection-button:first-child');
+        const guestBtn = document.querySelector('.selection-button:last-child');
+        
+        // Get hidden streamlit buttons
+        const hiddenButtons = document.querySelectorAll('button[kind="primary"]');
+        let memberHiddenBtn = null;
+        let guestHiddenBtn = null;
+        
+        hiddenButtons.forEach(btn => {
+            if (btn.textContent.includes('member_hidden')) {
+                memberHiddenBtn = btn;
+            } else if (btn.textContent.includes('guest_hidden')) {
+                guestHiddenBtn = btn;
             }
         });
-    }, 100);
+        
+        // Connect click events
+        if (memberBtn && memberHiddenBtn) {
+            memberBtn.onclick = function() {
+                memberHiddenBtn.click();
+            };
+        }
+        
+        if (guestBtn && guestHiddenBtn) {
+            guestBtn.onclick = function() {
+                guestHiddenBtn.click();
+            };
+        }
+        
+        // Extra hiding for any visible buttons
+        hiddenButtons.forEach(btn => {
+            if (btn.textContent.includes('_hidden')) {
+                btn.style.display = 'none';
+                btn.style.visibility = 'hidden';
+                btn.style.position = 'absolute';
+                btn.style.left = '-9999px';
+                btn.style.opacity = '0';
+                btn.style.pointerEvents = 'none';
+                btn.parentElement.style.display = 'none';
+            }
+        });
+    }, 200);
     </script>
     """, unsafe_allow_html=True)
 
