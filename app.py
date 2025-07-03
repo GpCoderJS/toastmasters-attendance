@@ -542,13 +542,13 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Check for button clicks
+    # Check for button clicks first
     if 'member_clicked' not in st.session_state:
         st.session_state.member_clicked = False
     if 'guest_clicked' not in st.session_state:
         st.session_state.guest_clicked = False
     
-    # Handle button clicks
+    # Handle navigation immediately
     if st.session_state.member_clicked:
         st.session_state.step = 'member_login'
         st.session_state.login_type = 'member'
@@ -561,15 +561,15 @@ if st.session_state.step == 'home':
         st.session_state.guest_clicked = False
         st.rerun()
     
-    # Beautiful custom selection buttons (original design)
+    # Beautiful custom selection buttons 
     st.markdown("""
     <div class="selection-buttons">
-        <div class="selection-button member-button">
+        <div class="selection-button member-button" onclick="setMemberClicked()">
             <div class="icon">👥</div>
             <div class="title">Member</div>
             <div class="subtitle">Registered Members</div>
         </div>
-        <div class="selection-button guest-button">
+        <div class="selection-button guest-button" onclick="setGuestClicked()">
             <div class="icon">🎯</div>
             <div class="title">Guest</div>
             <div class="subtitle">Visitors & New Members</div>
@@ -577,82 +577,50 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Hidden streamlit buttons for functionality - using CSS to hide them
-    st.markdown("""
-    <style>
-    /* Hide hidden buttons completely */
-    button[kind="primary"] {
-        display: none !important;
-        visibility: hidden !important;
-        position: absolute !important;
-        left: -9999px !important;
-        top: -9999px !important;
-        width: 0 !important;
-        height: 0 !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-    
+    # Completely hidden buttons with better hiding
+    st.markdown('<div style="display: none; visibility: hidden; position: absolute; left: -9999px; opacity: 0;">', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("member_hidden", key="member_select", type="primary"):
+        if st.button("🔘", key="member_select"):
             st.session_state.member_clicked = True
             st.rerun()
     with col2:
-        if st.button("guest_hidden", key="guest_select", type="primary"):
+        if st.button("🔘", key="guest_select"):
             st.session_state.guest_clicked = True
             st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    # JavaScript to connect custom buttons to hidden streamlit buttons
+    # JavaScript to connect buttons
     st.markdown("""
     <script>
-    // Direct click handlers for custom buttons
-    setTimeout(function() {
-        // Get custom buttons
-        const memberBtn = document.querySelector('.selection-button:first-child');
-        const guestBtn = document.querySelector('.selection-button:last-child');
-        
-        // Get hidden streamlit buttons
-        const hiddenButtons = document.querySelectorAll('button[kind="primary"]');
-        let memberHiddenBtn = null;
-        let guestHiddenBtn = null;
-        
-        hiddenButtons.forEach(btn => {
-            if (btn.textContent.includes('member_hidden')) {
-                memberHiddenBtn = btn;
-            } else if (btn.textContent.includes('guest_hidden')) {
-                guestHiddenBtn = btn;
+    function setMemberClicked() {
+        // Find the hidden member button and click it
+        const buttons = document.querySelectorAll('button');
+        for (let button of buttons) {
+            if (button.getAttribute('data-testid') && button.textContent.includes('🔘')) {
+                // Click the first hidden button (member)
+                button.click();
+                break;
             }
-        });
-        
-        // Connect click events
-        if (memberBtn && memberHiddenBtn) {
-            memberBtn.onclick = function() {
-                memberHiddenBtn.click();
-            };
         }
-        
-        if (guestBtn && guestHiddenBtn) {
-            guestBtn.onclick = function() {
-                guestHiddenBtn.click();
-            };
-        }
-        
-        // Extra hiding for any visible buttons
-        hiddenButtons.forEach(btn => {
-            if (btn.textContent.includes('_hidden')) {
-                btn.style.display = 'none';
-                btn.style.visibility = 'hidden';
-                btn.style.position = 'absolute';
-                btn.style.left = '-9999px';
-                btn.style.opacity = '0';
-                btn.style.pointerEvents = 'none';
-                btn.parentElement.style.display = 'none';
+    }
+    
+    function setGuestClicked() {
+        // Find the hidden guest button and click it
+        const buttons = document.querySelectorAll('button');
+        let found = false;
+        for (let button of buttons) {
+            if (button.getAttribute('data-testid') && button.textContent.includes('🔘')) {
+                if (found) {
+                    // Click the second hidden button (guest)
+                    button.click();
+                    break;
+                } else {
+                    found = true;
+                }
             }
-        });
-    }, 200);
+        }
+    }
     </script>
     """, unsafe_allow_html=True)
 
