@@ -30,11 +30,14 @@ st.markdown("""
     --white: #FFFFFF;
     --light-gray: #F8FAFC;
     --text-dark: #1F2937;
+    --success-green: #10B981;
+    --gradient-primary: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+    --gradient-bg: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
 }
 
 /* Body background with dark gradient */
 .stApp {
-    background: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
+    background: var(--gradient-bg);
     min-height: 100vh;
 }
 
@@ -67,52 +70,143 @@ header {visibility: hidden;}
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Login form styling - REMOVED WHITE BOX */
-.login-container {
-    background: transparent;
+/* Main container */
+.main-container {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
     padding: 2rem;
-    border-radius: 0;
-    box-shadow: none;
-    border: none;
-    max-width: 400px;
+    max-width: 440px;
     margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.login-header {
+/* Step headers */
+.step-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.login-header h2 {
+.step-header h2 {
     color: var(--white);
     margin-bottom: 0.5rem;
     font-size: 1.5rem;
+    font-weight: 600;
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-.login-header p {
+.step-header p {
     color: rgba(255, 255, 255, 0.8);
     font-size: 0.9rem;
+    margin: 0;
 }
 
-/* Section headers */
-.section-header {
-    color: var(--white);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 1.5rem 0 1rem 0;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+/* Selection buttons - FIXED FOR MOBILE */
+.selection-buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem;
+}
+
+.selection-button {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem 1rem !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(10px) !important;
+    color: var(--white) !important;
+    text-decoration: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    min-height: 100px !important;
+}
+
+.selection-button:hover {
+    background: rgba(6, 182, 212, 0.2) !important;
+    border-color: var(--primary-blue) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
+}
+
+.selection-button .icon {
+    font-size: 2rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.selection-button .title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.selection-button .subtitle {
+    font-size: 0.85rem !important;
+    opacity: 0.8 !important;
+}
+
+/* Login type tabs - PROPERLY FIXED */
+.login-type-buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.login-type-buttons .stButton {
+    margin: 0 !important;
+}
+
+.login-type-buttons .stButton > button {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Active/Inactive tab styling */
+.active-tab button {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.inactive-tab button {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.inactive-tab button:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Input styling */
+.stTextInput > label {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500 !important;
+    margin-bottom: 0.5rem !important;
+}
+
 .stTextInput > div > div > input {
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     padding: 0.75rem;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);
     color: var(--text-dark);
+    backdrop-filter: blur(10px);
 }
 
 .stTextInput > div > div > input:focus {
@@ -121,130 +215,145 @@ header {visibility: hidden;}
     background: var(--white);
 }
 
-/* Button styling - Updated for new colors */
+.stTextInput > div > div > input::placeholder {
+    color: rgba(31, 41, 55, 0.6);
+}
+
+/* Submit button styling */
 .stButton > button {
-    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 0.75rem 2rem;
-    width: 100%;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 2rem !important;
+    width: 100% !important;
+    transition: all 0.3s ease !important;
+    margin-top: 1rem !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
-}
-
-/* Login type buttons - side by side - FIXED for mobile */
-.login-type-buttons {
-    display: flex !important;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.login-type-buttons .stButton {
-    flex: 1 !important;
-    min-width: 0 !important;
-}
-
-.login-type-buttons .stButton > button {
-    margin-top: 0;
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-    width: 100% !important;
-}
-
-/* Active tab styling - Updated colors */
-.active-tab button {
-    background: var(--primary-blue) !important;
-    color: white !important;
-}
-
-.inactive-tab button {
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: var(--white) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4) !important;
 }
 
 /* Success/Error messages */
 .success-message {
-    background: rgba(232, 245, 232, 0.9);
-    border: 1px solid #4CAF50;
-    color: #2E7D32;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--success-green);
+    color: var(--white);
     padding: 1rem;
     border-radius: 8px;
     margin: 1rem 0;
+    backdrop-filter: blur(10px);
+    text-align: center;
 }
 
 .error-message {
-    background: rgba(255, 235, 238, 0.9);
-    border: 1px solid #F44336;
-    color: #C62828;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid #EF4444;
+    color: var(--white);
     padding: 1rem;
     border-radius: 8px;
     margin: 1rem 0;
-}
-
-/* Admin panel styling - MOVED TO FOOTER */
-.admin-panel {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin: 2rem auto 1rem auto;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
-    max-width: 500px;
+    text-align: center;
 }
 
-/* Footer styling */
-.footer {
+/* Voting link button */
+.voting-link-container {
+    margin-top: 2rem;
     text-align: center;
-    padding: 2rem 0 1rem 0;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
+}
+
+.voting-link-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--success-green), #059669);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.voting-link-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    text-decoration: none;
+    color: white;
+}
+
+/* Back button */
+.back-button {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
     .header-container {
+        padding: 0.5rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .logo-title {
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.5rem;
         text-align: center;
     }
     
     .logo-title h1 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
     
-    .login-container {
+    .main-container {
         margin: 0 1rem;
         padding: 1.5rem;
+        border-radius: 12px;
+    }
+    
+    .selection-buttons {
+        gap: 0.75rem !important;
+    }
+    
+    .selection-button {
+        padding: 1.25rem 0.75rem !important;
+        min-height: 90px !important;
+    }
+    
+    .selection-button .icon {
+        font-size: 1.75rem !important;
+    }
+    
+    .selection-button .title {
+        font-size: 1rem !important;
+    }
+    
+    .selection-button .subtitle {
+        font-size: 0.8rem !important;
     }
     
     .login-type-buttons {
-        flex-direction: row !important;
-        gap: 0.5rem;
-    }
-    
-    .login-type-buttons .stButton {
-        flex: 1 !important;
-        min-width: 0 !important;
+        gap: 0.5rem !important;
     }
     
     .login-type-buttons .stButton > button {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.5rem;
-        white-space: nowrap;
-    }
-    
-    .admin-panel {
-        margin: 2rem 1rem 1rem 1rem;
-        padding: 1.25rem;
+        padding: 0.6rem 0.75rem !important;
+        font-size: 0.9rem !important;
     }
 }
 
@@ -259,17 +368,10 @@ header {visibility: hidden;}
     background: transparent !important;
 }
 
-/* Ensure forms have proper styling */
 .stForm {
     background: transparent;
     border: none;
     padding: 0;
-}
-
-/* Input labels styling */
-.stTextInput > label {
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-weight: 500 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -292,10 +394,6 @@ def get_logo_base64():
 @st.cache_resource
 def init_google_sheets():
     try:
-        # import json
-        # info=json.loads(st.secrets["google_service_account"]["credentials_json"])
-
-        # st.write(len(st.secrets["google_service_account"]["private_key"]))
         creds = Credentials.from_service_account_info(dict(st.secrets["google_service_account"]), scopes=SCOPE)
         client = gspread.authorize(creds)   
         sheet = client.open("Toastmasters Attendance")
@@ -310,15 +408,11 @@ def get_meeting_code(sheet):
         code_data = meetingcode_sheet.get_all_records()
         
         if code_data:
-            
-
             expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S").replace(tzinfo=ZoneInfo("Asia/Kolkata"))
-            # expiry_time = datetime.strptime(code_data[0]["Expiry Timestamp"], "%Y-%m-%d %H:%M:%S")
             if datetime.now(ist) <= expiry_time:
                 return code_data[0]["Meeting Code"]
     except Exception:
         raise e
-    
 
 def create_or_update_attendance_member(sheet, name, phone, today):
     """Create or update attendance member record"""
@@ -336,7 +430,7 @@ def create_or_update_attendance_member(sheet, name, phone, today):
         
         # Add today's date as a new column if not present
         if today not in headers:
-            matrix_sheet.update_cell(1, len(headers) + 1, today)
+            matrix_sheet.update_cell(1, len(headers) + 1, today)  
             headers.append(today)
         
         # Look for existing member record
@@ -364,7 +458,6 @@ def create_or_update_attendance_member(sheet, name, phone, today):
 def generate_meeting_code(sheet):
     """Generate new meeting code"""
     try:
-        
         new_code = "TM" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
         expiry = datetime.now(ist) + timedelta(hours=2)
         expiry_str = expiry.strftime("%Y-%m-%d %H:%M:%S")
@@ -378,9 +471,10 @@ def generate_meeting_code(sheet):
     except Exception as e:
         st.error(f"Error generating meeting code: {str(e)}")
         raise e
-    
 
 # Initialize session state
+if 'step' not in st.session_state:
+    st.session_state.step = 'home'
 if 'login_type' not in st.session_state:
     st.session_state.login_type = 'member'
 if 'show_admin' not in st.session_state:
@@ -391,14 +485,15 @@ if 'generated_code' not in st.session_state:
     st.session_state.generated_code = None
 if 'code_expiry' not in st.session_state:
     st.session_state.code_expiry = None
+if 'user_name' not in st.session_state:
+    st.session_state.user_name = None
 
-# Header with logo (centered)
+# Header with logo
 logo_base64 = get_logo_base64()
 
 if logo_base64:
     logo_html = f'<img src="data:image/png;base64,{logo_base64}" width="50" height="50" style="border-radius: 8px;">'
 else:
-    # Fallback to TM icon if logo not found
     logo_html = '<div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; backdrop-filter: blur(10px);">TM</div>'
 
 st.markdown(f"""
@@ -410,57 +505,109 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Main login interface
+# Initialize Google Sheets
 sheet = init_google_sheets()
 if not sheet:
     st.stop()
 
+# Main container
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
+# HOME STEP
+if st.session_state.step == 'home':
+    st.markdown("""
+    <div class="step-header">
+        <h2>Welcome to the Meeting</h2>
+        <p>Please select your attendance type</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Selection buttons using columns for better control
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("", key="member_select", help="For registered members"):
+            st.session_state.step = 'member_login'
+            st.session_state.login_type = 'member'
+            st.rerun()
+        # Custom styling for this button
+        st.markdown("""
+        <style>
+        button[data-testid="baseButton-secondary"]:first-of-type {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 2px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 12px !important;
+            padding: 1.5rem 1rem !important;
+            height: 100px !important;
+            width: 100% !important;
+            position: relative !important;
+        }
+        button[data-testid="baseButton-secondary"]:first-of-type:before {
+            content: "👥\\A Member\\A Sign In" !important;
+            white-space: pre !important;
+            color: white !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            line-height: 1.4 !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        if st.button("", key="guest_select", help="For guests and visitors"):
+            st.session_state.step = 'guest_login'
+            st.session_state.login_type = 'guest'
+            st.rerun()
+    
+    # Use HTML buttons for better control
+    st.markdown("""
+    <div class="selection-buttons">
+        <div class="selection-button" onclick="document.querySelector('[data-testid=\\"baseButton-secondary\\"]').click()">
+            <div class="icon">👥</div>
+            <div class="title">Member</div>
+            <div class="subtitle">Registered Members</div>
+        </div>
+        <div class="selection-button" onclick="document.querySelector('[data-testid=\\"baseButton-secondary\\"][data-testid=\\"baseButton-secondary\\"]').click()">
+            <div class="icon">🎯</div>
+            <div class="title">Guest</div>
+            <div class="subtitle">Visitors & New Members</div>
+        </div>
+    </div>
+    
+    <script>
+    setTimeout(function() {
+        document.querySelectorAll('.selection-button')[0].onclick = function() {
+            document.querySelector('button[key="member_select"]').click();
+        };
+        document.querySelectorAll('.selection-button')[1].onclick = function() {
+            document.querySelector('button[key="guest_select"]').click();
+        };
+    }, 100);
+    </script>
+    """, unsafe_allow_html=True)
 
-# Login container (now transparent)
-st.markdown('<div class="login-container">', unsafe_allow_html=True)
-
-# Login header
-st.markdown("""
-<div class="login-header">
-    <h2>Welcome to the Meeting</h2>
-    <p>Please sign in to mark your attendance</p>
-</div>
-""", unsafe_allow_html=True)
-
-# Login type tabs - side by side
-st.markdown('<div class="login-type-buttons">', unsafe_allow_html=True)
-col1, col2 = st.columns(2)
-
-with col1:
-    member_class = "active-tab" if st.session_state.login_type == 'member' else "inactive-tab"
-    st.markdown(f'<div class="{member_class}">', unsafe_allow_html=True)
-    if st.button("👥 Member", key="member_tab", use_container_width=True):
-        st.session_state.login_type = 'member'
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with col2:
-    guest_class = "active-tab" if st.session_state.login_type == 'guest' else "inactive-tab"
-    st.markdown(f'<div class="{guest_class}">', unsafe_allow_html=True)
-    if st.button("🎯 Guest", key="guest_tab", use_container_width=True):
-        st.session_state.login_type = 'guest'
-    st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Member Login Form
-if st.session_state.login_type == 'member':
-    st.markdown('<h3 class="section-header">👥 Member Check-in</h3>', unsafe_allow_html=True)
+# MEMBER LOGIN STEP
+elif st.session_state.step == 'member_login':
+    col_back, col_space = st.columns([1, 3])
+    with col_back:
+        if st.button("← Back", key="back_member", help="Go back to home"):
+            st.session_state.step = 'home'
+            st.rerun()
+    
+    st.markdown("""
+    <div class="step-header">
+        <h2>👥 Member Check-in</h2>
+        <p>Enter your registered phone number</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     with st.form("member_form", clear_on_submit=False):
         phone = st.text_input("📱 Phone Number", placeholder="Enter your registered phone number")
-       
         submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
         
         if submitted:
-            
             if not phone.strip():
-                st.error("❌ Please enter your phone number.")
+                st.markdown('<div class="error-message">❌ Please enter your phone number.</div>', unsafe_allow_html=True)
             else:
                 try:
                     members_sheet = sheet.worksheet("Members")
@@ -478,32 +625,42 @@ if st.session_state.login_type == 'member':
                         
                         # Create or update Attendance_Member matrix
                         if create_or_update_attendance_member(sheet, name, phone, today):
-                            st.success(f"✅ Welcome **{name}**! You've been marked present for today's meeting.")
+                            st.session_state.user_name = name
+                            st.session_state.step = 'success'
+                            st.rerun()
                         else:
-                            st.warning("⚠️ Attendance logged but matrix update failed.")
+                            st.markdown('<div class="error-message">⚠️ Attendance logged but matrix update failed.</div>', unsafe_allow_html=True)
                     else:
-                        st.error("❌ Phone number not found in member records.")
+                        st.markdown('<div class="error-message">❌ Phone number not found in member records.</div>', unsafe_allow_html=True)
                         
                 except Exception as e:
-                    st.error(f"❌ Error processing attendance: {str(e)}")
+                    st.markdown(f'<div class="error-message">❌ Error processing attendance: {str(e)}</div>', unsafe_allow_html=True)
 
-# Guest Login Form
-else:
-    st.markdown('<h3 class="section-header">🎯 Guest Check-in</h3>', unsafe_allow_html=True)
+# GUEST LOGIN STEP
+elif st.session_state.step == 'guest_login':
+    col_back, col_space = st.columns([1, 3])
+    with col_back:
+        if st.button("← Back", key="back_guest", help="Go back to home"):
+            st.session_state.step = 'home'
+            st.rerun()
+    
+    st.markdown("""
+    <div class="step-header">
+        <h2>🎯 Guest Check-in</h2>
+        <p>Please provide your details</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     with st.form("guest_form", clear_on_submit=False):
         name = st.text_input("👤 Full Name", placeholder="Enter your full name")
-        
         phone = st.text_input("📱 Phone Number", placeholder="Enter your phone number")
-       
         submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
         
         if submitted:
-            
             if not name.strip():
-                st.error("❌ Please enter your name.")
+                st.markdown('<div class="error-message">❌ Please enter your name.</div>', unsafe_allow_html=True)
             elif not phone.strip():
-                st.error("❌ Please enter your email address.")
+                st.markdown('<div class="error-message">❌ Please enter your phone number.</div>', unsafe_allow_html=True)
             else:
                 try:
                     timestamp = datetime.now(ist).strftime("%Y-%m-%d %H:%M:%S")
@@ -516,9 +673,45 @@ else:
                     guest_sheet = sheet.worksheet("Guest")
                     guest_sheet.append_row([timestamp, name, "None", phone, "0000"])
                     
-                    st.success(f"✅ Welcome **{name}**! Thank you for joining us as a guest today.")
+                    st.session_state.user_name = name
+                    st.session_state.step = 'success'
+                    st.rerun()
                     
                 except Exception as e:
-                    st.error(f"❌ Error processing guest registration: {str(e)}")
+                    st.markdown(f'<div class="error-message">❌ Error processing guest registration: {str(e)}</div>', unsafe_allow_html=True)
+
+# SUCCESS STEP
+elif st.session_state.step == 'success':
+    st.markdown(f"""
+    <div class="step-header">
+        <h2>✅ Welcome!</h2>
+        <p>Thank you for joining us today</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.session_state.user_name:
+        st.markdown(f"""
+        <div class="success-message">
+            <strong>Hello {st.session_state.user_name}!</strong><br>
+            You've been successfully marked present for today's meeting.
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Voting link section
+    st.markdown("""
+    <div class="voting-link-container">
+        <a href="https://forms.gle/eEFE3ZdZSMK6Vdf5A" 
+           target="_blank" class="voting-link-button">
+            🗳️ &nbsp; Vote for Best Speaker
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Option to sign in someone else
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    if st.button("➕ Sign in another person", key="another_person", use_container_width=True):
+        st.session_state.step = 'home'
+        st.session_state.user_name = None
+        st.rerun()
 
 st.markdown('</div>', unsafe_allow_html=True)
