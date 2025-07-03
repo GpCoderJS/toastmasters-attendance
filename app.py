@@ -22,8 +22,8 @@ st.markdown("""
 <style>
 /* Main theme colors - Modern Dark Blue */
 :root {
-    --primary-blue: #06B6D4;
-    --secondary-blue: #0891B2;
+    --primary-blue: #8B5CF6;
+    --secondary-blue: #7C3AED;
     --light-blue: #E0F7FA;
     --dark-blue: #0F172A;
     --medium-blue: #1E40AF;
@@ -31,7 +31,7 @@ st.markdown("""
     --light-gray: #F8FAFC;
     --text-dark: #1F2937;
     --success-green: #10B981;
-    --gradient-primary: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+    --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
     --gradient-bg: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
 }
 
@@ -122,7 +122,7 @@ header {visibility: hidden;}
 
 .stTextInput > div > div > input:focus {
     border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
     background: var(--white);
 }
 
@@ -153,11 +153,11 @@ div[data-testid="column"]:last-child button {
 
 div[data-testid="column"]:first-child button:hover,
 div[data-testid="column"]:last-child button:hover {
-    background: rgba(6, 182, 212, 0.25) !important;
+    background: rgba(139, 92, 246, 0.25) !important;
     border-color: var(--primary-blue) !important;
     border-width: 3px !important;
     transform: translateY(-4px) scale(1.02) !important;
-    box-shadow: 0 16px 48px rgba(6, 182, 212, 0.4) !important;
+    box-shadow: 0 16px 48px rgba(139, 92, 246, 0.4) !important;
 }
 
 /* Submit button styling */
@@ -172,13 +172,13 @@ div[data-testid="column"]:last-child button:hover {
     width: 100% !important;
     transition: all 0.3s ease !important;
     margin-top: 1.5rem !important;
-    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .stButton > button:hover {
     transform: translateY(-3px) !important;
-    box-shadow: 0 12px 35px rgba(6, 182, 212, 0.5) !important;
+    box-shadow: 0 12px 35px rgba(139, 92, 246, 0.5) !important;
 }
 
 /* Success/Error messages */
@@ -254,11 +254,33 @@ div[data-testid="column"]:last-child button:hover {
         border-radius: 12px;
     }
     
+    /* FIXED: Force buttons to stay side by side on mobile */
+    div[data-testid="column"] {
+        flex: 1 !important;
+        width: 50% !important;
+        min-width: 0 !important;
+    }
+    
     div[data-testid="column"]:first-child button,
     div[data-testid="column"]:last-child button {
-        height: 120px !important;
-        padding: 1.5rem 0.75rem !important;
-        font-size: 0.9rem !important;
+        height: 110px !important;
+        padding: 1.2rem 0.5rem !important;
+        font-size: 0.85rem !important;
+        border-radius: 12px !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* Ensure columns container uses flexbox properly */
+    div[data-testid="column"]:first-child,
+    div[data-testid="column"]:last-child {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    /* Force horizontal layout for button container */
+    div[data-testid="element-container"] > div[data-testid="column"] {
+        display: flex !important;
+        flex: 1 !important;
     }
 }
 
