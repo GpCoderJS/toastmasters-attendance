@@ -542,34 +542,15 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Check for button clicks first
-    if 'member_clicked' not in st.session_state:
-        st.session_state.member_clicked = False
-    if 'guest_clicked' not in st.session_state:
-        st.session_state.guest_clicked = False
-    
-    # Handle navigation immediately
-    if st.session_state.member_clicked:
-        st.session_state.step = 'member_login'
-        st.session_state.login_type = 'member'
-        st.session_state.member_clicked = False
-        st.rerun()
-    
-    if st.session_state.guest_clicked:
-        st.session_state.step = 'guest_login'
-        st.session_state.login_type = 'guest'
-        st.session_state.guest_clicked = False
-        st.rerun()
-    
-    # Beautiful custom selection buttons 
+    # Beautiful selection buttons (visual only)
     st.markdown("""
     <div class="selection-buttons">
-        <div class="selection-button member-button" onclick="setMemberClicked()">
+        <div class="selection-button member-button" onclick="selectMember()">
             <div class="icon">👥</div>
             <div class="title">Member</div>
             <div class="subtitle">Registered Members</div>
         </div>
-        <div class="selection-button guest-button" onclick="setGuestClicked()">
+        <div class="selection-button guest-button" onclick="selectGuest()">
             <div class="icon">🎯</div>
             <div class="title">Guest</div>
             <div class="subtitle">Visitors & New Members</div>
@@ -577,50 +558,75 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Completely hidden buttons with better hiding
-    st.markdown('<div style="display: none; visibility: hidden; position: absolute; left: -9999px; opacity: 0;">', unsafe_allow_html=True)
+    # Add selection state tracking
+    if 'selected_type' not in st.session_state:
+        st.session_state.selected_type = None
+    
+    # Login type selection using columns (hidden)
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🔘", key="member_select"):
-            st.session_state.member_clicked = True
+        if st.button("Select Member", key="select_member", type="secondary"):
+            st.session_state.selected_type = 'member'
             st.rerun()
     with col2:
-        if st.button("🔘", key="guest_select"):
-            st.session_state.guest_clicked = True
+        if st.button("Select Guest", key="select_guest", type="secondary"):
+            st.session_state.selected_type = 'guest'
             st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
     
-    # JavaScript to connect buttons
+    # Show continue button if a type is selected
+    if st.session_state.selected_type:
+        st.markdown(f"""
+        <div style="text-align: center; margin: 1.5rem 0;">
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">
+                Selected: <strong style="color: var(--primary-blue);">
+                {st.session_state.selected_type.title()}</strong>
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button(f"Continue as {st.session_state.selected_type.title()}", key="continue_btn", use_container_width=True):
+            if st.session_state.selected_type == 'member':
+                st.session_state.step = 'member_login'
+                st.session_state.login_type = 'member'
+            else:
+                st.session_state.step = 'guest_login'
+                st.session_state.login_type = 'guest'
+            st.rerun()
+    
+    # JavaScript for visual selection
     st.markdown("""
     <script>
-    function setMemberClicked() {
-        // Find the hidden member button and click it
-        const buttons = document.querySelectorAll('button');
-        for (let button of buttons) {
-            if (button.getAttribute('data-testid') && button.textContent.includes('🔘')) {
-                // Click the first hidden button (member)
-                button.click();
-                break;
-            }
-        }
+    function selectMember() {
+        // Visual feedback
+        document.querySelector('.member-button').style.borderColor = '#06B6D4';
+        document.querySelector('.guest-button').style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        
+        // Click hidden member button
+        const memberBtn = document.querySelector('button[data-testid*="select_member"]') || 
+                         document.querySelector('button:contains("Select Member")');
+        if (memberBtn) memberBtn.click();
     }
     
-    function setGuestClicked() {
-        // Find the hidden guest button and click it
-        const buttons = document.querySelectorAll('button');
-        let found = false;
-        for (let button of buttons) {
-            if (button.getAttribute('data-testid') && button.textContent.includes('🔘')) {
-                if (found) {
-                    // Click the second hidden button (guest)
-                    button.click();
-                    break;
-                } else {
-                    found = true;
-                }
-            }
-        }
+    function selectGuest() {
+        // Visual feedback
+        document.querySelector('.guest-button').style.borderColor = '#06B6D4';
+        document.querySelector('.member-button').style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        
+        // Click hidden guest button
+        const guestBtn = document.querySelector('button[data-testid*="select_guest"]') || 
+                        document.querySelector('button:contains("Select Guest")');
+        if (guestBtn) guestBtn.click();
     }
+    
+    // Hide selection buttons
+    setTimeout(function() {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('Select Member') || btn.textContent.includes('Select Guest')) {
+                btn.style.display = 'none';
+            }
+        });
+    }, 100);
     </script>
     """, unsafe_allow_html=True)
 
