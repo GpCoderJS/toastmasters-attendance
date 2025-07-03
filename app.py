@@ -363,15 +363,26 @@ header {visibility: hidden;}
     padding-bottom: 2rem;
 }
 
-/* Hide any white background containers */
+/* Hide any white background containers and forms */
 .stContainer {
     background: transparent !important;
 }
 
 .stForm {
-    background: transparent;
-    border: none;
-    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: none !important;
+}
+
+/* Hide form containers completely */
+form[data-testid="form"] {
+    display: none !important;
+}
+
+/* Hide all primary buttons by default */
+button[kind="primary"] {
+    display: none !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -522,63 +533,68 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Hidden buttons for functionality
-    if st.button("member_hidden", key="member_select", type="primary"):
-        st.session_state.step = 'member_login'
-        st.session_state.login_type = 'member'
-        st.rerun()
-    
-    if st.button("guest_hidden", key="guest_select", type="primary"):
-        st.session_state.step = 'guest_login'
-        st.session_state.login_type = 'guest'
-        st.rerun()
-    
-    # Custom HTML buttons with JavaScript
+    # Custom HTML buttons with direct session state updates
     st.markdown("""
     <div class="selection-buttons">
-        <div class="selection-button" onclick="clickMemberButton()">
+        <div class="selection-button" id="member-btn">
             <div class="icon">👥</div>
             <div class="title">Member</div>
             <div class="subtitle">Registered Members</div>
         </div>
-        <div class="selection-button" onclick="clickGuestButton()">
+        <div class="selection-button" id="guest-btn">
             <div class="icon">🎯</div>
             <div class="title">Guest</div>
             <div class="subtitle">Visitors & New Members</div>
         </div>
     </div>
+    """, unsafe_allow_html=True)
     
+    # Use columns for invisible buttons that actually work
+    col1, col2 = st.columns(2)
+    with col1:
+        # Use a form to avoid showing the button
+        with st.form("member_form_home", clear_on_submit=True):
+            member_clicked = st.form_submit_button("Member", type="primary")
+            if member_clicked:
+                st.session_state.step = 'member_login'
+                st.session_state.login_type = 'member'
+                st.rerun()
+    
+    with col2:
+        with st.form("guest_form_home", clear_on_submit=True):
+            guest_clicked = st.form_submit_button("Guest", type="primary")
+            if guest_clicked:
+                st.session_state.step = 'guest_login'
+                st.session_state.login_type = 'guest'
+                st.rerun()
+    
+    # JavaScript to hide forms and connect custom buttons
+    st.markdown("""
     <script>
-    function clickMemberButton() {
-        // Find and click the hidden member button
-        const buttons = parent.document.querySelectorAll('button[kind="primary"]');
-        for (let button of buttons) {
-            if (button.textContent.includes('member_hidden')) {
-                button.click();
-                break;
+    // Hide the forms completely
+    setTimeout(function() {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.style.display = 'none';
+        });
+        
+        // Connect custom buttons to form submissions
+        document.getElementById('member-btn').onclick = function() {
+            const memberForm = document.querySelector('form[data-testid="form"]:first-of-type');
+            if (memberForm) {
+                const submitBtn = memberForm.querySelector('button[type="submit"]');
+                if (submitBtn) submitBtn.click();
             }
-        }
-    }
-    
-    function clickGuestButton() {
-        // Find and click the hidden guest button
-        const buttons = parent.document.querySelectorAll('button[kind="primary"]');
-        for (let button of buttons) {
-            if (button.textContent.includes('guest_hidden')) {
-                button.click();
-                break;
+        };
+        
+        document.getElementById('guest-btn').onclick = function() {
+            const guestForm = document.querySelector('form[data-testid="form"]:last-of-type');
+            if (guestForm) {
+                const submitBtn = guestForm.querySelector('button[type="submit"]');
+                if (submitBtn) submitBtn.click();
             }
-        }
-    }
-    
-    // Hide the actual Streamlit buttons
-    const style = document.createElement('style');
-    style.innerHTML = `
-        button[kind="primary"] {
-            display: none !important;
-        }
-    `;
-    document.head.appendChild(style);
+        };
+    }, 100);
     </script>
     """, unsafe_allow_html=True)
 
