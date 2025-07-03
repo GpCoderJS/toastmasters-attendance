@@ -542,15 +542,15 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Beautiful selection buttons (visual only)
+    # Beautiful selection buttons (now functional)
     st.markdown("""
     <div class="selection-buttons">
-        <div class="selection-button member-button" onclick="selectMember()">
+        <div class="selection-button member-button" onclick="selectMember()" id="member-card">
             <div class="icon">👥</div>
             <div class="title">Member</div>
             <div class="subtitle">Registered Members</div>
         </div>
-        <div class="selection-button guest-button" onclick="selectGuest()">
+        <div class="selection-button guest-button" onclick="selectGuest()" id="guest-card">
             <div class="icon">🎯</div>
             <div class="title">Guest</div>
             <div class="subtitle">Visitors & New Members</div>
@@ -562,16 +562,18 @@ if st.session_state.step == 'home':
     if 'selected_type' not in st.session_state:
         st.session_state.selected_type = None
     
-    # Login type selection using columns (hidden)
+    # Hidden selection buttons 
+    st.markdown('<div style="display: none;">', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Select Member", key="select_member", type="secondary"):
+        if st.button("Select Member", key="select_member"):
             st.session_state.selected_type = 'member'
             st.rerun()
     with col2:
-        if st.button("Select Guest", key="select_guest", type="secondary"):
+        if st.button("Select Guest", key="select_guest"):
             st.session_state.selected_type = 'guest'
             st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
     
     # Show continue button if a type is selected
     if st.session_state.selected_type:
@@ -593,40 +595,58 @@ if st.session_state.step == 'home':
                 st.session_state.login_type = 'guest'
             st.rerun()
     
-    # JavaScript for visual selection
+    # JavaScript for card selection
     st.markdown("""
     <script>
     function selectMember() {
-        // Visual feedback
-        document.querySelector('.member-button').style.borderColor = '#06B6D4';
-        document.querySelector('.guest-button').style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        // Visual feedback - highlight member card
+        const memberCard = document.getElementById('member-card');
+        const guestCard = document.getElementById('guest-card');
+        
+        memberCard.style.borderColor = '#06B6D4';
+        memberCard.style.borderWidth = '3px';
+        memberCard.style.background = 'rgba(6, 182, 212, 0.15)';
+        
+        guestCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        guestCard.style.borderWidth = '2px';
+        guestCard.style.background = 'rgba(255, 255, 255, 0.08)';
         
         // Click hidden member button
-        const memberBtn = document.querySelector('button[data-testid*="select_member"]') || 
-                         document.querySelector('button:contains("Select Member")');
-        if (memberBtn) memberBtn.click();
+        setTimeout(() => {
+            const buttons = document.querySelectorAll('button');
+            for (let btn of buttons) {
+                if (btn.textContent.includes('Select Member')) {
+                    btn.click();
+                    break;
+                }
+            }
+        }, 50);
     }
     
     function selectGuest() {
-        // Visual feedback
-        document.querySelector('.guest-button').style.borderColor = '#06B6D4';
-        document.querySelector('.member-button').style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        // Visual feedback - highlight guest card
+        const memberCard = document.getElementById('member-card');
+        const guestCard = document.getElementById('guest-card');
+        
+        guestCard.style.borderColor = '#06B6D4';
+        guestCard.style.borderWidth = '3px';
+        guestCard.style.background = 'rgba(6, 182, 212, 0.15)';
+        
+        memberCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        memberCard.style.borderWidth = '2px';
+        memberCard.style.background = 'rgba(255, 255, 255, 0.08)';
         
         // Click hidden guest button
-        const guestBtn = document.querySelector('button[data-testid*="select_guest"]') || 
-                        document.querySelector('button:contains("Select Guest")');
-        if (guestBtn) guestBtn.click();
-    }
-    
-    // Hide selection buttons
-    setTimeout(function() {
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('Select Member') || btn.textContent.includes('Select Guest')) {
-                btn.style.display = 'none';
+        setTimeout(() => {
+            const buttons = document.querySelectorAll('button');
+            for (let btn of buttons) {
+                if (btn.textContent.includes('Select Guest')) {
+                    btn.click();
+                    break;
+                }
             }
-        });
-    }, 100);
+        }, 50);
+    }
     </script>
     """, unsafe_allow_html=True)
 
