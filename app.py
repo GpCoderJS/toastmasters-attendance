@@ -480,7 +480,7 @@ if st.session_state.step == 'home':
             st.rerun()
     
     with col2:
-        if st.button("🎯\n\nGuest\n\nVisitors & New Members", key="guest_select", use_container_width=True):
+        if st.button("🎯\n\nGuest\n\nVisitors ", key="guest_select", use_container_width=True):
             st.session_state.guest_clicked = True
             st.rerun()
 
