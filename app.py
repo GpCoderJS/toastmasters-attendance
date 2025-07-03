@@ -695,7 +695,7 @@ elif st.session_state.step == 'success':
     # Voting link section
     st.markdown("""
     <div class="voting-link-container">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNHGjYnh5RshuJIZ_wy0xM5Lsac4Vvqie9h-gUb572jljdKA/viewform" 
+        <a href="https://forms.gle/eEFE3ZdZSMK6Vdf5A" 
            target="_blank" class="voting-link-button">
             🗳️ &nbsp; Vote for Best Speaker
         </a>
