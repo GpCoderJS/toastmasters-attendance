@@ -102,95 +102,6 @@ header {visibility: hidden;}
     margin: 0;
 }
 
-/* Selection buttons - FIXED FOR MOBILE */
-.selection-buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 1rem !important;
-    margin-bottom: 2rem;
-}
-
-.selection-button {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 2px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 12px !important;
-    padding: 1.5rem 1rem !important;
-    text-align: center !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    backdrop-filter: blur(10px) !important;
-    color: var(--white) !important;
-    text-decoration: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    min-height: 100px !important;
-}
-
-.selection-button:hover {
-    background: rgba(6, 182, 212, 0.2) !important;
-    border-color: var(--primary-blue) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
-}
-
-.selection-button .icon {
-    font-size: 2rem !important;
-    margin-bottom: 0.5rem !important;
-}
-
-.selection-button .title {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 0.25rem !important;
-}
-
-.selection-button .subtitle {
-    font-size: 0.85rem !important;
-    opacity: 0.8 !important;
-}
-
-/* Login type tabs - PROPERLY FIXED */
-.login-type-buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 0.75rem !important;
-    margin-bottom: 1.5rem !important;
-}
-
-.login-type-buttons .stButton {
-    margin: 0 !important;
-}
-
-.login-type-buttons .stButton > button {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0.75rem 1rem !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
-}
-
-/* Active/Inactive tab styling */
-.active-tab button {
-    background: var(--gradient-primary) !important;
-    color: white !important;
-    border: none !important;
-}
-
-.inactive-tab button {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-.inactive-tab button:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    transform: translateY(-1px) !important;
-}
-
 /* Input styling */
 .stTextInput > label {
     color: rgba(255, 255, 255, 0.9) !important;
@@ -219,23 +130,55 @@ header {visibility: hidden;}
     color: rgba(31, 41, 55, 0.6);
 }
 
+/* Enhanced Button Styling */
+div[data-testid="column"]:first-child button,
+div[data-testid="column"]:last-child button {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 16px !important;
+    padding: 2rem 1rem !important;
+    height: 140px !important;
+    width: 100% !important;
+    color: white !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    white-space: pre-line !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+div[data-testid="column"]:first-child button:hover,
+div[data-testid="column"]:last-child button:hover {
+    background: rgba(6, 182, 212, 0.25) !important;
+    border-color: var(--primary-blue) !important;
+    border-width: 3px !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    box-shadow: 0 16px 48px rgba(6, 182, 212, 0.4) !important;
+}
+
 /* Submit button styling */
 .stButton > button {
     background: var(--gradient-primary) !important;
     color: white !important;
     border: none !important;
-    border-radius: 8px !important;
-    font-size: 1rem !important;
+    border-radius: 12px !important;
+    font-size: 1.1rem !important;
     font-weight: 600 !important;
-    padding: 0.75rem 2rem !important;
+    padding: 1rem 2rem !important;
     width: 100% !important;
     transition: all 0.3s ease !important;
-    margin-top: 1rem !important;
+    margin-top: 1.5rem !important;
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 35px rgba(6, 182, 212, 0.5) !important;
 }
 
 /* Success/Error messages */
@@ -261,60 +204,31 @@ header {visibility: hidden;}
     text-align: center;
 }
 
-/* Voting link button - Force white text */
-.voting-link-container a,
-.voting-link-container a:link,
-.voting-link-container a:visited,
-.voting-link-container a:hover,
-.voting-link-container a:active,
-.voting-link-container a:focus {
-    color: white !important;
-    text-decoration: none !important;
+/* Voting link container */
+.voting-link-container {
+    margin-top: 2rem;
+    text-align: center;
 }
 
 .voting-link-button {
     display: inline-block !important;
     background: linear-gradient(135deg, var(--success-green), #059669) !important;
     color: white !important;
-    padding: 1rem 2rem !important;
-    border-radius: 12px !important;
+    padding: 1.2rem 2.5rem !important;
+    border-radius: 16px !important;
     text-decoration: none !important;
     font-weight: 600 !important;
-    font-size: 1rem !important;
+    font-size: 1.1rem !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .voting-link-button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 16px 48px rgba(16, 185, 129, 0.6) !important;
     text-decoration: none !important;
     color: white !important;
-}
-
-/* Additional override for any Streamlit link styling */
-.stMarkdown a {
-    color: white !important;
-}
-
-.stMarkdown a:hover {
-    color: white !important;
-}
-
-/* Back button */
-.back-button {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 8px !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 0.9rem !important;
-    margin-bottom: 1rem !important;
-}
-
-.back-button:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    transform: translateY(-1px) !important;
 }
 
 /* Mobile responsive */
@@ -340,33 +254,10 @@ header {visibility: hidden;}
         border-radius: 12px;
     }
     
-    .selection-buttons {
-        gap: 0.75rem !important;
-    }
-    
-    .selection-button {
-        padding: 1.25rem 0.75rem !important;
-        min-height: 90px !important;
-    }
-    
-    .selection-button .icon {
-        font-size: 1.75rem !important;
-    }
-    
-    .selection-button .title {
-        font-size: 1rem !important;
-    }
-    
-    .selection-button .subtitle {
-        font-size: 0.8rem !important;
-    }
-    
-    .login-type-buttons {
-        gap: 0.5rem !important;
-    }
-    
-    .login-type-buttons .stButton > button {
-        padding: 0.6rem 0.75rem !important;
+    div[data-testid="column"]:first-child button,
+    div[data-testid="column"]:last-child button {
+        height: 120px !important;
+        padding: 1.5rem 0.75rem !important;
         font-size: 0.9rem !important;
     }
 }
@@ -375,12 +266,6 @@ header {visibility: hidden;}
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
-}
-
-/* Voting link container */
-.voting-link-container {
-    margin-top: 2rem;
-    text-align: center;
 }
 
 /* Hide any white background containers and forms */
@@ -530,7 +415,7 @@ sheet = init_google_sheets()
 if not sheet:
     st.stop()
 
-# Main container starts here
+# Main container
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
 # HOME STEP
@@ -542,121 +427,37 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Add selection state tracking
-    if 'selected_type' not in st.session_state:
-        st.session_state.selected_type = None
+    # Check for button clicks
+    if 'member_clicked' not in st.session_state:
+        st.session_state.member_clicked = False
+    if 'guest_clicked' not in st.session_state:
+        st.session_state.guest_clicked = False
     
-    # Beautiful selection buttons (visual + functional)
-    st.markdown("""
-    <div class="selection-buttons">
-        <div class="selection-button member-button" id="member-card">
-            <div class="icon">👥</div>
-            <div class="title">Member</div>
-            <div class="subtitle">Registered Members</div>
-        </div>
-        <div class="selection-button guest-button" id="guest-card">
-            <div class="icon">🎯</div>
-            <div class="title">Guest</div>
-            <div class="subtitle">Visitors & New Members</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Handle button clicks
+    if st.session_state.member_clicked:
+        st.session_state.step = 'member_login'
+        st.session_state.login_type = 'member'
+        st.session_state.member_clicked = False
+        st.rerun()
     
-    # Selection buttons using columns
+    if st.session_state.guest_clicked:
+        st.session_state.step = 'guest_login'
+        st.session_state.login_type = 'guest'
+        st.session_state.guest_clicked = False
+        st.rerun()
+    
+    # Custom selection buttons
     col1, col2 = st.columns(2)
+    
     with col1:
-        if st.button("Select Member", key="select_member", use_container_width=True):
-            st.session_state.selected_type = 'member'
+        if st.button("👥\n\nMember\n\nRegistered Members", key="member_select", use_container_width=True):
+            st.session_state.member_clicked = True
             st.rerun()
+    
     with col2:
-        if st.button("Select Guest", key="select_guest", use_container_width=True):
-            st.session_state.selected_type = 'guest'
+        if st.button("🎯\n\nGuest\n\nVisitors & New Members", key="guest_select", use_container_width=True):
+            st.session_state.guest_clicked = True
             st.rerun()
-    
-    # Show selected state and continue button
-    if st.session_state.selected_type:
-        st.markdown(f"""
-        <div style="text-align: center; margin: 1.5rem 0;">
-            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">
-                Selected: <strong style="color: var(--primary-blue);">
-                {st.session_state.selected_type.title()}</strong>
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        if st.button(f"Continue as {st.session_state.selected_type.title()}", key="continue_btn", use_container_width=True):
-            if st.session_state.selected_type == 'member':
-                st.session_state.step = 'member_login'
-                st.session_state.login_type = 'member'
-            else:
-                st.session_state.step = 'guest_login'
-                st.session_state.login_type = 'guest'
-            st.rerun()
-    
-    # JavaScript for visual feedback
-    st.markdown("""
-    <script>
-    // Add click handlers to cards for visual feedback
-    setTimeout(function() {
-        const memberCard = document.getElementById('member-card');
-        const guestCard = document.getElementById('guest-card');
-        const buttons = document.querySelectorAll('button');
-        
-        // Find the actual streamlit buttons
-        let memberBtn = null;
-        let guestBtn = null;
-        
-        for (let btn of buttons) {
-            if (btn.textContent.includes('Select Member')) {
-                memberBtn = btn;
-            } else if (btn.textContent.includes('Select Guest')) {
-                guestBtn = btn;
-            }
-        }
-        
-        // Add click handlers to cards
-        if (memberCard && memberBtn) {
-            memberCard.onclick = function() {
-                // Visual feedback
-                memberCard.style.borderColor = '#06B6D4';
-                memberCard.style.borderWidth = '3px';
-                memberCard.style.background = 'rgba(6, 182, 212, 0.15)';
-                
-                guestCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                guestCard.style.borderWidth = '2px';
-                guestCard.style.background = 'rgba(255, 255, 255, 0.08)';
-                
-                // Click the hidden button
-                memberBtn.click();
-            };
-        }
-        
-        if (guestCard && guestBtn) {
-            guestCard.onclick = function() {
-                // Visual feedback
-                guestCard.style.borderColor = '#06B6D4';
-                guestCard.style.borderWidth = '3px';
-                guestCard.style.background = 'rgba(6, 182, 212, 0.15)';
-                
-                memberCard.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                memberCard.style.borderWidth = '2px';
-                memberCard.style.background = 'rgba(255, 255, 255, 0.08)';
-                
-                // Click the hidden button
-                guestBtn.click();
-            };
-        }
-        
-        // Hide the streamlit buttons
-        if (memberBtn) {
-            memberBtn.style.display = 'none';
-        }
-        if (guestBtn) {
-            guestBtn.style.display = 'none';
-        }
-    }, 200);
-    </script>
-    """, unsafe_allow_html=True)
 
 # MEMBER LOGIN STEP
 elif st.session_state.step == 'member_login':
@@ -779,7 +580,5 @@ elif st.session_state.step == 'success':
         </a>
     </div>
     """, unsafe_allow_html=True)
-    
-
 
 st.markdown('</div>', unsafe_allow_html=True)
