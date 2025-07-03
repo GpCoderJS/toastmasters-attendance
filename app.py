@@ -363,6 +363,33 @@ header {visibility: hidden;}
     padding-bottom: 2rem;
 }
 
+/* Custom styling for home page buttons */
+div[data-testid="column"]:first-child button,
+div[data-testid="column"]:last-child button {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem 1rem !important;
+    height: 120px !important;
+    width: 100% !important;
+    color: white !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    white-space: pre-line !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+div[data-testid="column"]:first-child button:hover,
+div[data-testid="column"]:last-child button:hover {
+    background: rgba(6, 182, 212, 0.2) !important;
+    border-color: var(--primary-blue) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
+}
+
 /* Hide any white background containers and forms */
 .stContainer {
     background: transparent !important;
@@ -372,17 +399,6 @@ header {visibility: hidden;}
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
-    display: none !important;
-}
-
-/* Hide form containers completely */
-form[data-testid="form"] {
-    display: none !important;
-}
-
-/* Hide all primary buttons by default */
-button[kind="primary"] {
-    display: none !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -533,70 +549,37 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Custom HTML buttons with direct session state updates
-    st.markdown("""
-    <div class="selection-buttons">
-        <div class="selection-button" id="member-btn">
-            <div class="icon">👥</div>
-            <div class="title">Member</div>
-            <div class="subtitle">Registered Members</div>
-        </div>
-        <div class="selection-button" id="guest-btn">
-            <div class="icon">🎯</div>
-            <div class="title">Guest</div>
-            <div class="subtitle">Visitors & New Members</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Check for button clicks
+    if 'member_clicked' not in st.session_state:
+        st.session_state.member_clicked = False
+    if 'guest_clicked' not in st.session_state:
+        st.session_state.guest_clicked = False
     
-    # Use columns for invisible buttons that actually work
+    # Handle button clicks
+    if st.session_state.member_clicked:
+        st.session_state.step = 'member_login'
+        st.session_state.login_type = 'member'
+        st.session_state.member_clicked = False
+        st.rerun()
+    
+    if st.session_state.guest_clicked:
+        st.session_state.step = 'guest_login'
+        st.session_state.login_type = 'guest'
+        st.session_state.guest_clicked = False
+        st.rerun()
+    
+    # Custom selection buttons
     col1, col2 = st.columns(2)
+    
     with col1:
-        # Use a form to avoid showing the button
-        with st.form("member_form_home", clear_on_submit=True):
-            member_clicked = st.form_submit_button("Member", type="primary")
-            if member_clicked:
-                st.session_state.step = 'member_login'
-                st.session_state.login_type = 'member'
-                st.rerun()
+        if st.button("👥\n\nMember\n\nRegistered Members", key="member_select", use_container_width=True):
+            st.session_state.member_clicked = True
+            st.rerun()
     
     with col2:
-        with st.form("guest_form_home", clear_on_submit=True):
-            guest_clicked = st.form_submit_button("Guest", type="primary")
-            if guest_clicked:
-                st.session_state.step = 'guest_login'
-                st.session_state.login_type = 'guest'
-                st.rerun()
-    
-    # JavaScript to hide forms and connect custom buttons
-    st.markdown("""
-    <script>
-    // Hide the forms completely
-    setTimeout(function() {
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            form.style.display = 'none';
-        });
-        
-        // Connect custom buttons to form submissions
-        document.getElementById('member-btn').onclick = function() {
-            const memberForm = document.querySelector('form[data-testid="form"]:first-of-type');
-            if (memberForm) {
-                const submitBtn = memberForm.querySelector('button[type="submit"]');
-                if (submitBtn) submitBtn.click();
-            }
-        };
-        
-        document.getElementById('guest-btn').onclick = function() {
-            const guestForm = document.querySelector('form[data-testid="form"]:last-of-type');
-            if (guestForm) {
-                const submitBtn = guestForm.querySelector('button[type="submit"]');
-                if (submitBtn) submitBtn.click();
-            }
-        };
-    }, 100);
-    </script>
-    """, unsafe_allow_html=True)
+        if st.button("🎯\n\nGuest\n\nVisitors & New Members", key="guest_select", use_container_width=True):
+            st.session_state.guest_clicked = True
+            st.rerun()
 
 # MEMBER LOGIN STEP
 elif st.session_state.step == 'member_login':
