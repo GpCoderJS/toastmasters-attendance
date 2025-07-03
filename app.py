@@ -20,10 +20,10 @@ st.set_page_config(
 # Custom CSS for professional UI
 st.markdown("""
 <style>
-/* Main theme colors - Modern Dark Blue */
+/* Main theme colors - Modern Orange/Amber with Transparency */
 :root {
-    --primary-blue: #8B5CF6;
-    --secondary-blue: #7C3AED;
+    --primary-blue: #F59E0B;
+    --secondary-blue: #D97706;
     --light-blue: #E0F7FA;
     --dark-blue: #0F172A;
     --medium-blue: #1E40AF;
@@ -31,7 +31,7 @@ st.markdown("""
     --light-gray: #F8FAFC;
     --text-dark: #1F2937;
     --success-green: #10B981;
-    --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    --gradient-primary: linear-gradient(135deg, rgba(245, 158, 11, 0.9) 0%, rgba(217, 119, 6, 0.9) 100%);
     --gradient-bg: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
 }
 
@@ -122,7 +122,7 @@ header {visibility: hidden;}
 
 .stTextInput > div > div > input:focus {
     border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
     background: var(--white);
 }
 
@@ -153,11 +153,11 @@ div[data-testid="column"]:last-child button {
 
 div[data-testid="column"]:first-child button:hover,
 div[data-testid="column"]:last-child button:hover {
-    background: rgba(139, 92, 246, 0.25) !important;
+    background: rgba(245, 158, 11, 0.2) !important;
     border-color: var(--primary-blue) !important;
     border-width: 3px !important;
     transform: translateY(-4px) scale(1.02) !important;
-    box-shadow: 0 16px 48px rgba(139, 92, 246, 0.4) !important;
+    box-shadow: 0 16px 48px rgba(245, 158, 11, 0.4) !important;
 }
 
 /* Submit button styling */
@@ -172,13 +172,16 @@ div[data-testid="column"]:last-child button:hover {
     width: 100% !important;
     transition: all 0.3s ease !important;
     margin-top: 1.5rem !important;
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .stButton > button:hover {
     transform: translateY(-3px) !important;
-    box-shadow: 0 12px 35px rgba(139, 92, 246, 0.5) !important;
+    box-shadow: 0 12px 35px rgba(245, 158, 11, 0.5) !important;
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.95) 0%, rgba(245, 158, 11, 0.95) 100%) !important;
 }
 
 /* Success/Error messages */
