@@ -43,7 +43,20 @@ footer {visibility: hidden;}
 header {visibility: hidden;}
 .stDeployButton {display: none;}
 
-/* Remove header container styling */
+/* Simple header text only */
+.header-text {
+    text-align: center;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.header-text h1 {
+    color: var(--loyal-blue);
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
 /* Step headers */
 .step-header {
@@ -215,9 +228,13 @@ button[data-testid="baseButton-primary"]:hover,
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 2rem !important;
-        margin: 1rem 0 !important;
+    .header-text {
+        padding: 1rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .header-text h1 {
+        font-size: 2rem;
     }
     
     /* Force buttons to stay side by side on mobile */
@@ -388,11 +405,11 @@ if 'code_expiry' not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
-# Header - Just text, no containers
+# Header - Simple text only (no container or logo)
 st.markdown("""
-<h1 style="color: #004165; text-align: center; font-size: 2.5rem; font-weight: 700; margin: 2rem 0; padding: 0;">
-    Koramangala Toastmasters Club
-</h1>
+<div class="header-text">
+    <h1>Koramangala Toastmasters Club</h1>
+</div>
 """, unsafe_allow_html=True)
 
 # Initialize Google Sheets
