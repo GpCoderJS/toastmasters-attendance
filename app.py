@@ -171,7 +171,7 @@ header {visibility: hidden;}
 }
 
 /* Submit button styling - MAROON */
-.stButton > button[type="submit"],
+.stButton > button,
 .stFormSubmitButton > button {
     background: var(--gradient-maroon) !important;
     color: var(--white) !important;
@@ -187,29 +187,11 @@ header {visibility: hidden;}
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
-.stButton > button[type="submit"]:hover,
+.stButton > button:hover,
 .stFormSubmitButton > button:hover {
     transform: translateY(-3px) !important;
     box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
     background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
-}
-
-/* Back button styling */
-.stButton > button:not([type="submit"]) {
-    background: transparent !important;
-    color: var(--loyal-blue) !important;
-    border: 1px solid var(--loyal-blue) !important;
-    border-radius: 8px !important;
-    font-size: 0.9rem !important;
-    font-weight: 500 !important;
-    padding: 0.5rem 1rem !important;
-    transition: all 0.2s ease !important;
-}
-
-.stButton > button:not([type="submit"]):hover {
-    background: var(--loyal-blue) !important;
-    color: var(--white) !important;
-    transform: translateY(-1px) !important;
 }
 
 /* Success/Error messages */
@@ -277,23 +259,33 @@ header {visibility: hidden;}
         font-size: 2rem;
     }
     
-    .selection-button {
-        height: 110px;
-        padding: 1rem 0.8rem;
+    /* Force buttons to stay side by side on mobile */
+    div[data-testid="column"] {
+        flex: 1 !important;
+        width: 50% !important;
+        min-width: 0 !important;
     }
     
-    .selection-button img {
-        width: 36px;
-        height: 36px;
-        margin-right: 0.8rem;
+    div[data-testid="column"]:first-child button,
+    div[data-testid="column"]:last-child button {
+        height: 110px !important;
+        padding: 1.2rem 0.5rem !important;
+        font-size: 0.95rem !important;
+        border-radius: 12px !important;
+        line-height: 1.3 !important;
     }
     
-    .selection-button-content strong {
-        font-size: 1.1rem;
+    /* Ensure columns container uses flexbox properly */
+    div[data-testid="column"]:first-child,
+    div[data-testid="column"]:last-child {
+        display: flex !important;
+        flex-direction: column !important;
     }
     
-    .selection-button-content small {
-        font-size: 0.9rem;
+    /* Force horizontal layout for button container */
+    div[data-testid="element-container"] > div[data-testid="column"] {
+        display: flex !important;
+        flex: 1 !important;
     }
 }
 
@@ -477,70 +469,37 @@ if st.session_state.step == 'home':
     </div>
     """, unsafe_allow_html=True)
     
-    # Custom selection buttons with icons
-    st.markdown("""
-    <div class="selection-columns">
-        <div class="selection-column">
-            <a href="#" onclick="window.parent.postMessage({type: 'streamlit:setComponentValue', key: 'member_click', value: true}, '*'); return false;" class="selection-button">
-                <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Member Icon" />
-                <div class="selection-button-content">
-                    <strong>Member</strong>
-                    <small>Registered Members</small>
-                </div>
-            </a>
-        </div>
-        <div class="selection-column">
-            <a href="#" onclick="window.parent.postMessage({type: 'streamlit:setComponentValue', key: 'guest_click', value: true}, '*'); return false;" class="selection-button">
-                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Guest Icon" />
-                <div class="selection-button-content">
-                    <strong>Guest</strong>
-                    <small>Visitors</small>
-                </div>
-            </a>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Check for button clicks
+    if 'member_clicked' not in st.session_state:
+        st.session_state.member_clicked = False
+    if 'guest_clicked' not in st.session_state:
+        st.session_state.guest_clicked = False
     
-    # Hidden Streamlit components to handle clicks
+    # Handle button clicks
+    if st.session_state.member_clicked:
+        st.session_state.step = 'member_login'
+        st.session_state.login_type = 'member'
+        st.session_state.member_clicked = False
+        st.rerun()
+    
+    if st.session_state.guest_clicked:
+        st.session_state.step = 'guest_login'
+        st.session_state.login_type = 'guest'
+        st.session_state.guest_clicked = False
+        st.rerun()
+    
+    # Custom selection buttons
     col1, col2 = st.columns(2)
+    
     with col1:
-        if st.button("", key="member_hidden", help="Member", disabled=False, use_container_width=True):
-            st.session_state.step = 'member_login'
-            st.session_state.login_type = 'member'
+        if st.button("🧑\n\nMember\n\nRegistered Members", key="member_select", use_container_width=True):
+            st.session_state.member_clicked = True
             st.rerun()
     
     with col2:
-        if st.button("", key="guest_hidden", help="Guest", disabled=False, use_container_width=True):
-            st.session_state.step = 'guest_login'
-            st.session_state.login_type = 'guest'
+        if st.button("🙋‍♂️\n\nGuest\n\nVisitors ", key="guest_select", use_container_width=True):
+            st.session_state.guest_clicked = True
             st.rerun()
-    
-    # JavaScript to handle custom button clicks
-    st.markdown("""
-    <script>
-    const memberButton = document.querySelector('button[aria-label="Member"]');
-    const guestButton = document.querySelector('button[aria-label="Guest"]');
-    
-    if (memberButton) {
-        memberButton.style.display = 'none';
-    }
-    if (guestButton) {
-        guestButton.style.display = 'none';
-    }
-    
-    // Handle custom button clicks
-    document.querySelectorAll('.selection-button').forEach((button, index) => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (index === 0 && memberButton) {
-                memberButton.click();
-            } else if (index === 1 && guestButton) {
-                guestButton.click();
-            }
-        });
-    });
-    </script>
-    """, unsafe_allow_html=True)
 
 # MEMBER LOGIN STEP
 elif st.session_state.step == 'member_login':
