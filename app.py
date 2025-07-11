@@ -20,24 +20,20 @@ st.set_page_config(
 # Custom CSS for professional UI
 st.markdown("""
 <style>
-/* Main theme colors - Fresh Emerald Green with Transparency */
+/* Main theme colors - Based on provided color scheme */
 :root {
-    --primary-blue: #10B981;
-    --secondary-blue: #059669;
-    --light-blue: #E0F7FA;
-    --dark-blue: #0F172A;
-    --medium-blue: #1E40AF;
+    --primary-maroon: #772432;
+    --loyal-blue: #004165;
+    --cool-gray: #A9B2B1;
     --white: #FFFFFF;
-    --light-gray: #F8FAFC;
     --text-dark: #1F2937;
     --success-green: #10B981;
-    --gradient-primary: linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.9) 100%);
-    --gradient-bg: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
+    --gradient-maroon: linear-gradient(135deg, #772432 0%, #8B2635 100%);
 }
 
-/* Body background with dark gradient */
+/* Body background - WHITE */
 .stApp {
-    background: var(--gradient-bg);
+    background: var(--white);
     min-height: 100vh;
 }
 
@@ -52,34 +48,22 @@ header {visibility: hidden;}
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem 0;
+    padding: 2rem 0;
     margin-bottom: 2rem;
 }
 
 .logo-title {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .logo-title h1 {
-    color: var(--white);
+    color: var(--loyal-blue);
     margin: 0;
-    font-size: 1.8rem;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-/* Main container */
-.main-container {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
-    max-width: 440px;
-    margin: 0 auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* Step headers */
@@ -89,40 +73,39 @@ header {visibility: hidden;}
 }
 
 .step-header h2 {
-    color: var(--white);
+    color: var(--loyal-blue);
     margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .step-header p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
+    color: var(--loyal-blue);
+    font-size: 1.1rem;
     margin: 0;
+    font-weight: 500;
 }
 
 /* Input styling */
 .stTextInput > label {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: var(--loyal-blue) !important;
     font-weight: 500 !important;
     margin-bottom: 0.5rem !important;
 }
 
 .stTextInput > div > div > input {
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--cool-gray);
     border-radius: 8px;
     padding: 0.75rem;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--white);
     color: var(--text-dark);
-    backdrop-filter: blur(10px);
 }
 
 .stTextInput > div > div > input:focus {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+    border-color: var(--loyal-blue);
+    box-shadow: 0 0 0 3px rgba(0, 65, 101, 0.3);
     background: var(--white);
 }
 
@@ -130,40 +113,39 @@ header {visibility: hidden;}
     color: rgba(31, 41, 55, 0.6);
 }
 
-/* Enhanced Button Styling */
+/* Enhanced Button Styling - MAROON with WHITE text */
 div[data-testid="column"]:first-child button,
 div[data-testid="column"]:last-child button {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    background: var(--gradient-maroon) !important;
+    border: 2px solid var(--primary-maroon) !important;
     border-radius: 16px !important;
     padding: 2rem 1rem !important;
     height: 140px !important;
     width: 100% !important;
-    color: white !important;
-    font-size: 1rem !important;
+    color: var(--white) !important;
+    font-size: 1.1rem !important;
     font-weight: 600 !important;
     line-height: 1.5 !important;
     white-space: pre-line !important;
     text-align: center !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 div[data-testid="column"]:first-child button:hover,
 div[data-testid="column"]:last-child button:hover {
-    background: rgba(16, 185, 129, 0.2) !important;
-    border-color: var(--primary-blue) !important;
+    background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
+    border-color: var(--primary-maroon) !important;
     border-width: 3px !important;
     transform: translateY(-4px) scale(1.02) !important;
-    box-shadow: 0 16px 48px rgba(16, 185, 129, 0.4) !important;
+    box-shadow: 0 8px 24px rgba(119, 36, 50, 0.4) !important;
 }
 
 /* Submit button styling */
 .stButton > button {
-    background: var(--gradient-primary) !important;
-    color: white !important;
+    background: var(--gradient-maroon) !important;
+    color: var(--white) !important;
     border: none !important;
     border-radius: 12px !important;
     font-size: 1.1rem !important;
@@ -172,38 +154,34 @@ div[data-testid="column"]:last-child button:hover {
     width: 100% !important;
     transition: all 0.3s ease !important;
     margin-top: 1.5rem !important;
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .stButton > button:hover {
     transform: translateY(-3px) !important;
-    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.5) !important;
-    background: linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%) !important;
+    box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
+    background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
 }
 
 /* Success/Error messages */
 .success-message {
     background: rgba(16, 185, 129, 0.1);
     border: 1px solid var(--success-green);
-    color: var(--white);
+    color: var(--loyal-blue);
     padding: 1rem;
     border-radius: 8px;
     margin: 1rem 0;
-    backdrop-filter: blur(10px);
     text-align: center;
 }
 
 .error-message {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid #EF4444;
-    color: var(--white);
+    color: #EF4444;
     padding: 1rem;
     border-radius: 8px;
     margin: 1rem 0;
-    backdrop-filter: blur(10px);
     text-align: center;
 }
 
@@ -215,49 +193,43 @@ div[data-testid="column"]:last-child button:hover {
 
 .voting-link-button {
     display: inline-block !important;
-    background: linear-gradient(135deg, var(--success-green), #059669) !important;
-    color: white !important;
+    background: var(--gradient-maroon) !important;
+    color: var(--white) !important;
     padding: 1.2rem 2.5rem !important;
     border-radius: 16px !important;
     text-decoration: none !important;
     font-weight: 600 !important;
     font-size: 1.1rem !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4) !important;
+    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .voting-link-button:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 16px 48px rgba(16, 185, 129, 0.6) !important;
+    box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
     text-decoration: none !important;
-    color: white !important;
+    color: var(--white) !important;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
     .header-container {
-        padding: 0.5rem 0;
+        padding: 1rem 0;
         margin-bottom: 1.5rem;
     }
     
     .logo-title {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1rem;
         text-align: center;
     }
     
     .logo-title h1 {
-        font-size: 1.4rem;
+        font-size: 2rem;
     }
     
-    .main-container {
-        margin: 0 1rem;
-        padding: 1.5rem;
-        border-radius: 12px;
-    }
-    
-    /* FIXED: Force buttons to stay side by side on mobile */
+    /* Force buttons to stay side by side on mobile */
     div[data-testid="column"] {
         flex: 1 !important;
         width: 50% !important;
@@ -268,7 +240,7 @@ div[data-testid="column"]:last-child button:hover {
     div[data-testid="column"]:last-child button {
         height: 110px !important;
         padding: 1.2rem 0.5rem !important;
-        font-size: 0.85rem !important;
+        font-size: 0.95rem !important;
         border-radius: 12px !important;
         line-height: 1.3 !important;
     }
@@ -293,7 +265,7 @@ div[data-testid="column"]:last-child button:hover {
     padding-bottom: 2rem;
 }
 
-/* Hide any white background containers and forms */
+/* Hide any background containers and forms */
 .stContainer {
     background: transparent !important;
 }
@@ -302,6 +274,22 @@ div[data-testid="column"]:last-child button:hover {
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
+}
+
+/* Hide the specific markdown container that creates unwanted spacing */
+div[data-testid="stMarkdownContainer"] .main-container {
+    display: none !important;
+}
+
+/* Ensure main content container is clean */
+.main-content-container {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 440px;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--cool-gray);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -422,9 +410,9 @@ if 'user_name' not in st.session_state:
 logo_base64 = get_logo_base64()
 
 if logo_base64:
-    logo_html = f'<img src="data:image/png;base64,{logo_base64}" width="50" height="50" style="border-radius: 8px;">'
+    logo_html = f'<img src="data:image/png;base64,{logo_base64}" width="80" height="80" style="border-radius: 8px;">'
 else:
-    logo_html = '<div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; backdrop-filter: blur(10px);">TM</div>'
+    logo_html = '<div style="width: 80px; height: 80px; background: #A9B2B1; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.5rem;">TM</div>'
 
 st.markdown(f"""
 <div class="header-container">
@@ -440,8 +428,8 @@ sheet = init_google_sheets()
 if not sheet:
     st.stop()
 
-# Main container
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
+# Main content container
+st.markdown('<div class="main-content-container">', unsafe_allow_html=True)
 
 # HOME STEP
 if st.session_state.step == 'home':

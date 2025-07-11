@@ -20,10 +20,10 @@ st.set_page_config(
 # Custom CSS for professional UI
 st.markdown("""
 <style>
-/* Main theme colors - Modern Dark Blue */
+/* Main theme colors - Fresh Emerald Green with Transparency */
 :root {
-    --primary-blue: #06B6D4;
-    --secondary-blue: #0891B2;
+    --primary-blue: #10B981;
+    --secondary-blue: #059669;
     --light-blue: #E0F7FA;
     --dark-blue: #0F172A;
     --medium-blue: #1E40AF;
@@ -31,7 +31,7 @@ st.markdown("""
     --light-gray: #F8FAFC;
     --text-dark: #1F2937;
     --success-green: #10B981;
-    --gradient-primary: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+    --gradient-primary: linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.9) 100%);
     --gradient-bg: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
 }
 
@@ -102,95 +102,6 @@ header {visibility: hidden;}
     margin: 0;
 }
 
-/* Selection buttons - FIXED FOR MOBILE */
-.selection-buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 1rem !important;
-    margin-bottom: 2rem;
-}
-
-.selection-button {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 2px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 12px !important;
-    padding: 1.5rem 1rem !important;
-    text-align: center !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    backdrop-filter: blur(10px) !important;
-    color: var(--white) !important;
-    text-decoration: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    min-height: 100px !important;
-}
-
-.selection-button:hover {
-    background: rgba(6, 182, 212, 0.2) !important;
-    border-color: var(--primary-blue) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
-}
-
-.selection-button .icon {
-    font-size: 2rem !important;
-    margin-bottom: 0.5rem !important;
-}
-
-.selection-button .title {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 0.25rem !important;
-}
-
-.selection-button .subtitle {
-    font-size: 0.85rem !important;
-    opacity: 0.8 !important;
-}
-
-/* Login type tabs - PROPERLY FIXED */
-.login-type-buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 0.75rem !important;
-    margin-bottom: 1.5rem !important;
-}
-
-.login-type-buttons .stButton {
-    margin: 0 !important;
-}
-
-.login-type-buttons .stButton > button {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0.75rem 1rem !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
-}
-
-/* Active/Inactive tab styling */
-.active-tab button {
-    background: var(--gradient-primary) !important;
-    color: white !important;
-    border: none !important;
-}
-
-.inactive-tab button {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-.inactive-tab button:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    transform: translateY(-1px) !important;
-}
-
 /* Input styling */
 .stTextInput > label {
     color: rgba(255, 255, 255, 0.9) !important;
@@ -211,7 +122,7 @@ header {visibility: hidden;}
 
 .stTextInput > div > div > input:focus {
     border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
     background: var(--white);
 }
 
@@ -219,23 +130,58 @@ header {visibility: hidden;}
     color: rgba(31, 41, 55, 0.6);
 }
 
+/* Enhanced Button Styling */
+div[data-testid="column"]:first-child button,
+div[data-testid="column"]:last-child button {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 16px !important;
+    padding: 2rem 1rem !important;
+    height: 140px !important;
+    width: 100% !important;
+    color: white !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    white-space: pre-line !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+div[data-testid="column"]:first-child button:hover,
+div[data-testid="column"]:last-child button:hover {
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: var(--primary-blue) !important;
+    border-width: 3px !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    box-shadow: 0 16px 48px rgba(16, 185, 129, 0.4) !important;
+}
+
 /* Submit button styling */
 .stButton > button {
     background: var(--gradient-primary) !important;
     color: white !important;
     border: none !important;
-    border-radius: 8px !important;
-    font-size: 1rem !important;
+    border-radius: 12px !important;
+    font-size: 1.1rem !important;
     font-weight: 600 !important;
-    padding: 0.75rem 2rem !important;
+    padding: 1rem 2rem !important;
     width: 100% !important;
     transition: all 0.3s ease !important;
-    margin-top: 1rem !important;
+    margin-top: 1.5rem !important;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.5) !important;
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%) !important;
 }
 
 /* Success/Error messages */
@@ -261,46 +207,31 @@ header {visibility: hidden;}
     text-align: center;
 }
 
-/* Voting link button */
+/* Voting link container */
 .voting-link-container {
     margin-top: 2rem;
     text-align: center;
 }
 
 .voting-link-button {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--success-green), #059669);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    display: inline-block !important;
+    background: linear-gradient(135deg, var(--success-green), #059669) !important;
+    color: white !important;
+    padding: 1.2rem 2.5rem !important;
+    border-radius: 16px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .voting-link-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-    text-decoration: none;
-    color: white;
-}
-
-/* Back button */
-.back-button {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 8px !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 0.9rem !important;
-    margin-bottom: 1rem !important;
-}
-
-.back-button:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    transform: translateY(-1px) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 16px 48px rgba(16, 185, 129, 0.6) !important;
+    text-decoration: none !important;
+    color: white !important;
 }
 
 /* Mobile responsive */
@@ -326,34 +257,33 @@ header {visibility: hidden;}
         border-radius: 12px;
     }
     
-    .selection-buttons {
-        gap: 0.75rem !important;
+    /* FIXED: Force buttons to stay side by side on mobile */
+    div[data-testid="column"] {
+        flex: 1 !important;
+        width: 50% !important;
+        min-width: 0 !important;
     }
     
-    .selection-button {
-        padding: 1.25rem 0.75rem !important;
-        min-height: 90px !important;
+    div[data-testid="column"]:first-child button,
+    div[data-testid="column"]:last-child button {
+        height: 110px !important;
+        padding: 1.2rem 0.5rem !important;
+        font-size: 0.85rem !important;
+        border-radius: 12px !important;
+        line-height: 1.3 !important;
     }
     
-    .selection-button .icon {
-        font-size: 1.75rem !important;
+    /* Ensure columns container uses flexbox properly */
+    div[data-testid="column"]:first-child,
+    div[data-testid="column"]:last-child {
+        display: flex !important;
+        flex-direction: column !important;
     }
     
-    .selection-button .title {
-        font-size: 1rem !important;
-    }
-    
-    .selection-button .subtitle {
-        font-size: 0.8rem !important;
-    }
-    
-    .login-type-buttons {
-        gap: 0.5rem !important;
-    }
-    
-    .login-type-buttons .stButton > button {
-        padding: 0.6rem 0.75rem !important;
-        font-size: 0.9rem !important;
+    /* Force horizontal layout for button container */
+    div[data-testid="element-container"] > div[data-testid="column"] {
+        display: flex !important;
+        flex: 1 !important;
     }
 }
 
@@ -361,33 +291,6 @@ header {visibility: hidden;}
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
-}
-
-/* Custom styling for home page buttons */
-div[data-testid="column"]:first-child button,
-div[data-testid="column"]:last-child button {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 2px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 12px !important;
-    padding: 1.5rem 1rem !important;
-    height: 120px !important;
-    width: 100% !important;
-    color: white !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    line-height: 1.4 !important;
-    white-space: pre-line !important;
-    text-align: center !important;
-    transition: all 0.3s ease !important;
-    backdrop-filter: blur(10px) !important;
-}
-
-div[data-testid="column"]:first-child button:hover,
-div[data-testid="column"]:last-child button:hover {
-    background: rgba(6, 182, 212, 0.2) !important;
-    border-color: var(--primary-blue) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3) !important;
 }
 
 /* Hide any white background containers and forms */
@@ -577,7 +480,7 @@ if st.session_state.step == 'home':
             st.rerun()
     
     with col2:
-        if st.button("🎯\n\nGuest\n\nVisitors & New Members", key="guest_select", use_container_width=True):
+        if st.button("🎯\n\nGuest\n\nVisitors ", key="guest_select", use_container_width=True):
             st.session_state.guest_clicked = True
             st.rerun()
 
@@ -702,7 +605,5 @@ elif st.session_state.step == 'success':
         </a>
     </div>
     """, unsafe_allow_html=True)
-    
-
 
 st.markdown('</div>', unsafe_allow_html=True)
