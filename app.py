@@ -93,15 +93,7 @@ header {visibility: hidden;}
     margin-bottom: 0.5rem !important;
 }
 
-.stTextInput > div > div > input {
-    border: 2px solid var(--cool-gray);
-    border-radius: 8px;
-    padding: 0.75rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: var(--white);
-    color: var(--text-dark);
-}
+
 
 .stTextInput > div > div > input:focus {
     border-color: var(--loyal-blue);
