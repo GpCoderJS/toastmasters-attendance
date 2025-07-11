@@ -113,11 +113,11 @@ header {visibility: hidden;}
     color: rgba(31, 41, 55, 0.6);
 }
 
-/* Enhanced Button Styling - MAROON with WHITE text */
+/* Enhanced Button Styling - LOYAL BLUE with WHITE text */
 div[data-testid="column"]:first-child button,
 div[data-testid="column"]:last-child button {
-    background: var(--gradient-maroon) !important;
-    border: 2px solid var(--primary-maroon) !important;
+    background: linear-gradient(135deg, #004165 0%, #00527f 100%) !important;
+    border: 2px solid var(--loyal-blue) !important;
     border-radius: 16px !important;
     padding: 2rem 1rem !important;
     height: 140px !important;
@@ -129,17 +129,17 @@ div[data-testid="column"]:last-child button {
     white-space: pre-line !important;
     text-align: center !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(0, 65, 101, 0.3) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 div[data-testid="column"]:first-child button:hover,
 div[data-testid="column"]:last-child button:hover {
-    background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
-    border-color: var(--primary-maroon) !important;
+    background: linear-gradient(135deg, #00527f 0%, #004165 100%) !important;
+    border-color: var(--loyal-blue) !important;
     border-width: 3px !important;
     transform: translateY(-4px) scale(1.02) !important;
-    box-shadow: 0 8px 24px rgba(119, 36, 50, 0.4) !important;
+    box-shadow: 0 8px 24px rgba(0, 65, 101, 0.4) !important;
 }: 1.3rem;
     font-weight: 700;
     margin-bottom: 0.3rem;
@@ -156,7 +156,7 @@ div[data-testid="column"]:last-child button:hover {
 
 /* Submit button styling */
 .stButton > button {
-    background: var(--gradient-maroon) !important;
+    background: linear-gradient(135deg, #004165 0%, #00527f 100%) !important;
     color: var(--white) !important;
     border: none !important;
     border-radius: 12px !important;
@@ -166,14 +166,14 @@ div[data-testid="column"]:last-child button:hover {
     width: 100% !important;
     transition: all 0.3s ease !important;
     margin-top: 1.5rem !important;
-    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(0, 65, 101, 0.3) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .stButton > button:hover {
     transform: translateY(-3px) !important;
-    box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
-    background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
+    box-shadow: 0 8px 20px rgba(0, 65, 101, 0.4) !important;
+    background: linear-gradient(135deg, #00527f 0%, #004165 100%) !important;
 }
 
 /* Success/Error messages */
@@ -205,7 +205,7 @@ div[data-testid="column"]:last-child button:hover {
 
 .voting-link-button {
     display: inline-block !important;
-    background: var(--gradient-maroon) !important;
+    background: linear-gradient(135deg, #004165 0%, #00527f 100%) !important;
     color: var(--white) !important;
     padding: 1.2rem 2.5rem !important;
     border-radius: 16px !important;
@@ -213,13 +213,13 @@ div[data-testid="column"]:last-child button:hover {
     font-weight: 600 !important;
     font-size: 1.1rem !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(0, 65, 101, 0.3) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 .voting-link-button:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
+    box-shadow: 0 8px 20px rgba(0, 65, 101, 0.4) !important;
     text-decoration: none !important;
     color: var(--white) !important;
 }
