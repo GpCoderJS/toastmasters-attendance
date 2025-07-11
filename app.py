@@ -463,12 +463,12 @@ if st.session_state.step == 'home':
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("👥\n\nMember\n\nRegistered Members", key="member_select", use_container_width=True):
+        if st.button("🧑\n\nMember\n\nRegistered Members", key="member_select", use_container_width=True):
             st.session_state.member_clicked = True
             st.rerun()
     
     with col2:
-        if st.button("🎯\n\nGuest\n\nVisitors ", key="guest_select", use_container_width=True):
+        if st.button("🙋‍♂️\n\nGuest\n\nVisitors ", key="guest_select", use_container_width=True):
             st.session_state.guest_clicked = True
             st.rerun()
 
@@ -482,7 +482,7 @@ elif st.session_state.step == 'member_login':
     
     st.markdown("""
     <div class="step-header">
-        <h2>👥 Member Check-in</h2>
+        <h2>🧑 Member Check-in</h2>
         <p>Enter your registered phone number</p>
     </div>
     """, unsafe_allow_html=True)
@@ -532,7 +532,7 @@ elif st.session_state.step == 'guest_login':
     
     st.markdown("""
     <div class="step-header">
-        <h2>🎯 Guest Check-in</h2>
+        <h2>🙋‍♂️ Guest Check-in</h2>
         <p>Please provide your details</p>
     </div>
     """, unsafe_allow_html=True)
