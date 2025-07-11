@@ -43,22 +43,14 @@ footer {visibility: hidden;}
 header {visibility: hidden;}
 .stDeployButton {display: none;}
 
-/* Custom header with logo */
-.header-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Simple header text only */
+.header-text {
+    text-align: center;
     padding: 2rem 0;
     margin-bottom: 2rem;
 }
 
-.logo-title {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.logo-title h1 {
+.header-text h1 {
     color: var(--loyal-blue);
     margin: 0;
     font-size: 2.5rem;
@@ -86,7 +78,7 @@ header {visibility: hidden;}
     font-weight: 500;
 }
 
-/* Input styling */
+/* Input styling - no icons */
 .stTextInput > label {
     color: var(--loyal-blue) !important;
     font-weight: 500 !important;
@@ -142,7 +134,7 @@ div[data-testid="column"]:last-child button:hover {
     box-shadow: 0 8px 24px rgba(119, 36, 50, 0.4) !important;
 }
 
-/* Submit button styling */
+/* Submit button styling - MAROON */
 .stButton > button {
     background: var(--gradient-maroon) !important;
     color: var(--white) !important;
@@ -162,6 +154,28 @@ div[data-testid="column"]:last-child button:hover {
     transform: translateY(-3px) !important;
     box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
     background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
+}
+
+/* Back button styling - GREY */
+.stButton > button[key="back_member"],
+.stButton > button[key="back_guest"] {
+    background: var(--cool-gray) !important;
+    color: var(--white) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;
+    width: auto !important;
+    margin-top: 0 !important;
+    box-shadow: 0 2px 6px rgba(169, 178, 177, 0.3) !important;
+}
+
+.stButton > button[key="back_member"]:hover,
+.stButton > button[key="back_guest"]:hover {
+    background: #9CA3A2 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(169, 178, 177, 0.4) !important;
 }
 
 /* Success/Error messages */
@@ -214,18 +228,12 @@ div[data-testid="column"]:last-child button:hover {
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-    .header-container {
+    .header-text {
         padding: 1rem 0;
         margin-bottom: 1.5rem;
     }
     
-    .logo-title {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .logo-title h1 {
+    .header-text h1 {
         font-size: 2rem;
     }
     
@@ -406,20 +414,10 @@ if 'code_expiry' not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
-# Header with logo
-logo_base64 = get_logo_base64()
-
-if logo_base64:
-    logo_html = f'<img src="data:image/png;base64,{logo_base64}" width="80" height="80" style="border-radius: 8px;">'
-else:
-    logo_html = '<div style="width: 80px; height: 80px; background: #A9B2B1; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.5rem;">TM</div>'
-
+# Header - Simple text only (no container)
 st.markdown(f"""
-<div class="header-container">
-    <div class="logo-title">
-        {logo_html}
-        <h1>Koramangala Toastmasters Club</h1>
-    </div>
+<div class="header-text">
+    <h1>Koramangala Toastmasters Club</h1>
 </div>
 """, unsafe_allow_html=True)
 
