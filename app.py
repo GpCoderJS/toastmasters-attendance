@@ -477,12 +477,12 @@ if st.session_state.step == 'home':
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("🧑\t\tMember", key="member_select", use_container_width=True):
+        if st.button("🧑               Member", key="member_select", use_container_width=True):
             st.session_state.member_clicked = True
             st.rerun()
     
     with col2:
-        if st.button("🙋‍♂️\t\tGuest", key="guest_select", use_container_width=True):
+        if st.button("🙋‍♂️               Guest", key="guest_select", use_container_width=True):
             st.session_state.guest_clicked = True
             st.rerun()
 
