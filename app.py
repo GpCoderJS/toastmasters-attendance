@@ -33,7 +33,7 @@ st.markdown("""
 
 /* Body background - WHITE */
 .stApp {
-    background: var(--white);
+    background: var(--white) !important;
     min-height: 100vh;
 }
 
@@ -78,7 +78,7 @@ header {visibility: hidden;}
     font-weight: 500;
 }
 
-/* Input styling - no icons */
+/* Input styling - NO ICONS */
 .stTextInput > label {
     color: var(--loyal-blue) !important;
     font-weight: 500 !important;
@@ -86,23 +86,23 @@ header {visibility: hidden;}
 }
 
 .stTextInput > div > div > input {
-    border: 2px solid var(--cool-gray);
-    border-radius: 8px;
-    padding: 0.75rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: var(--white);
-    color: var(--text-dark);
+    border: 2px solid var(--cool-gray) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+    background: var(--white) !important;
+    color: var(--text-dark) !important;
 }
 
 .stTextInput > div > div > input:focus {
-    border-color: var(--loyal-blue);
-    box-shadow: 0 0 0 3px rgba(0, 65, 101, 0.3);
-    background: var(--white);
+    border-color: var(--loyal-blue) !important;
+    box-shadow: 0 0 0 3px rgba(0, 65, 101, 0.3) !important;
+    background: var(--white) !important;
 }
 
 .stTextInput > div > div > input::placeholder {
-    color: rgba(31, 41, 55, 0.6);
+    color: rgba(31, 41, 55, 0.6) !important;
 }
 
 /* Enhanced Button Styling - MAROON with WHITE text */
@@ -134,7 +134,28 @@ div[data-testid="column"]:last-child button:hover {
     box-shadow: 0 8px 24px rgba(119, 36, 50, 0.4) !important;
 }
 
-/* Submit button styling - MAROON */
+/* BACK BUTTONS - GREY */
+button[data-testid="baseButton-secondary"] {
+    background: var(--cool-gray) !important;
+    color: var(--white) !important;
+    border: 2px solid var(--cool-gray) !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;
+    width: auto !important;
+    margin-top: 0 !important;
+    box-shadow: 0 2px 6px rgba(169, 178, 177, 0.3) !important;
+}
+
+button[data-testid="baseButton-secondary"]:hover {
+    background: #9CA3A2 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(169, 178, 177, 0.4) !important;
+}
+
+/* SIGN IN BUTTONS - MAROON */
+button[data-testid="baseButton-primary"],
 .stButton > button {
     background: var(--gradient-maroon) !important;
     color: var(--white) !important;
@@ -150,32 +171,11 @@ div[data-testid="column"]:last-child button:hover {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
+button[data-testid="baseButton-primary"]:hover,
 .stButton > button:hover {
     transform: translateY(-3px) !important;
     box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
     background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
-}
-
-/* Back button styling - GREY */
-.stButton > button[key="back_member"],
-.stButton > button[key="back_guest"] {
-    background: var(--cool-gray) !important;
-    color: var(--white) !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-size: 0.9rem !important;
-    font-weight: 500 !important;
-    padding: 0.5rem 1rem !important;
-    width: auto !important;
-    margin-top: 0 !important;
-    box-shadow: 0 2px 6px rgba(169, 178, 177, 0.3) !important;
-}
-
-.stButton > button[key="back_member"]:hover,
-.stButton > button[key="back_guest"]:hover {
-    background: #9CA3A2 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(169, 178, 177, 0.4) !important;
 }
 
 /* Success/Error messages */
@@ -309,15 +309,6 @@ SCOPE = [
 ]
 
 @st.cache_resource
-def get_logo_base64():
-    """Convert logo to base64 for embedding"""
-    try:
-        with open("logo.png", "rb") as img_file:
-            return base64.b64encode(img_file.read()).decode()
-    except FileNotFoundError:
-        return None
-
-@st.cache_resource
 def init_google_sheets():
     try:
         creds = Credentials.from_service_account_info(dict(st.secrets["google_service_account"]), scopes=SCOPE)
@@ -414,8 +405,8 @@ if 'code_expiry' not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
-# Header - Simple text only (no container)
-st.markdown(f"""
+# Header - Simple text only (no container or logo)
+st.markdown("""
 <div class="header-text">
     <h1>Koramangala Toastmasters Club</h1>
 </div>
@@ -474,20 +465,20 @@ if st.session_state.step == 'home':
 elif st.session_state.step == 'member_login':
     col_back, col_space = st.columns([1, 3])
     with col_back:
-        if st.button("← Back", key="back_member"):
+        if st.button("← Back", key="back_member", type="secondary"):
             st.session_state.step = 'home'
             st.rerun()
     
     st.markdown("""
     <div class="step-header">
-        <h2>👥 Member Check-in</h2>
+        <h2>Member Check-in</h2>
         <p>Enter your registered phone number</p>
     </div>
     """, unsafe_allow_html=True)
     
     with st.form("member_form", clear_on_submit=False):
-        phone = st.text_input("📱 Phone Number", placeholder="Enter your registered phone number")
-        submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
+        phone = st.text_input("Phone Number", placeholder="Enter your registered phone number")
+        submitted = st.form_submit_button("Sign In", use_container_width=True, type="primary")
         
         if submitted:
             if not phone.strip():
@@ -524,21 +515,21 @@ elif st.session_state.step == 'member_login':
 elif st.session_state.step == 'guest_login':
     col_back, col_space = st.columns([1, 3])
     with col_back:
-        if st.button("← Back", key="back_guest"):
+        if st.button("← Back", key="back_guest", type="secondary"):
             st.session_state.step = 'home'
             st.rerun()
     
     st.markdown("""
     <div class="step-header">
-        <h2>🎯 Guest Check-in</h2>
+        <h2>Guest Check-in</h2>
         <p>Please provide your details</p>
     </div>
     """, unsafe_allow_html=True)
     
     with st.form("guest_form", clear_on_submit=False):
-        name = st.text_input("👤 Full Name", placeholder="Enter your full name")
-        phone = st.text_input("📱 Phone Number", placeholder="Enter your phone number")
-        submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
+        name = st.text_input("Full Name", placeholder="Enter your full name")
+        phone = st.text_input("Phone Number", placeholder="Enter your phone number")
+        submitted = st.form_submit_button("Sign In", use_container_width=True, type="primary")
         
         if submitted:
             if not name.strip():
