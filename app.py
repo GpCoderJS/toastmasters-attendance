@@ -48,8 +48,8 @@ header {visibility: hidden;}
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
+    padding: 1.5rem 0 0.5rem 0;
+    margin-bottom: 0.5rem;
 }
 
 .logo-title {
@@ -69,7 +69,8 @@ header {visibility: hidden;}
 /* Step headers */
 .step-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
 }
 
 .step-header h2 {
@@ -229,8 +230,8 @@ div[data-testid="column"]:last-child button:hover {
 /* Mobile responsive */
 @media (max-width: 768px) {
     .header-container {
-        padding: 1rem 0;
-        margin-bottom: 1.5rem;
+        padding: 1rem 0 0.5rem 0;
+        margin-bottom: 0.5rem;
     }
     
     .logo-title {
@@ -275,7 +276,7 @@ div[data-testid="column"]:last-child button:hover {
 
 /* Remove default Streamlit container padding */
 .block-container {
-    padding-top: 2rem;
+    padding-top: 1rem;
     padding-bottom: 2rem;
 }
 
