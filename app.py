@@ -113,50 +113,34 @@ header {visibility: hidden;}
     color: rgba(31, 41, 55, 0.6);
 }
 
-/* Custom selection buttons for Member/Guest */
-.selection-button {
-    display: flex;
-    align-items: center;
-    background: var(--gradient-maroon);
-    color: var(--white);
-    border: 2px solid var(--primary-maroon);
-    border-radius: 16px;
-    padding: 1.5rem 1rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3);
-    width: 100%;
-    height: 140px;
-    cursor: pointer;
-    text-align: left;
+/* Enhanced Button Styling - MAROON with WHITE text */
+div[data-testid="column"]:first-child button,
+div[data-testid="column"]:last-child button {
+    background: var(--gradient-maroon) !important;
+    border: 2px solid var(--primary-maroon) !important;
+    border-radius: 16px !important;
+    padding: 2rem 1rem !important;
+    height: 140px !important;
+    width: 100% !important;
+    color: var(--white) !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    white-space: pre-line !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(119, 36, 50, 0.3) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
-.selection-button:hover {
-    background: linear-gradient(135deg, #8B2635 0%, #772432 100%);
-    border-color: var(--primary-maroon);
-    border-width: 3px;
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 8px 24px rgba(119, 36, 50, 0.4);
-    text-decoration: none;
-    color: var(--white);
-}
-
-.selection-button img {
-    width: 48px;
-    height: 48px;
-    margin-right: 1.2rem;
-    filter: brightness(0) invert(1); /* Makes the icon white */
-    flex-shrink: 0;
-}
-
-.selection-button-content {
-    flex: 1;
-    text-align: center;
-}
-
-.selection-button-content strong {
-    display: block;
-    font-size: 1.3rem;
+div[data-testid="column"]:first-child button:hover,
+div[data-testid="column"]:last-child button:hover {
+    background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
+    border-color: var(--primary-maroon) !important;
+    border-width: 3px !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    box-shadow: 0 8px 24px rgba(119, 36, 50, 0.4) !important;
+}: 1.3rem;
     font-weight: 700;
     margin-bottom: 0.3rem;
     color: var(--white);
@@ -192,6 +176,24 @@ header {visibility: hidden;}
     transform: translateY(-3px) !important;
     box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
     background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
+}
+
+/* Back button styling */
+.stButton > button:not([type="submit"]) {
+    background: transparent !important;
+    color: var(--loyal-blue) !important;
+    border: 1px solid var(--loyal-blue) !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.stButton > button:not([type="submit"]):hover {
+    background: var(--loyal-blue) !important;
+    color: var(--white) !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Success/Error messages */
