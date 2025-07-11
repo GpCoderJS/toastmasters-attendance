@@ -44,13 +44,6 @@ header {visibility: hidden;}
 .stDeployButton {display: none;}
 
 /* Custom header with logo */
-.header-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
-}
 
 .logo-title {
     display: flex;
