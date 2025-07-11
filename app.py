@@ -43,15 +43,7 @@ footer {visibility: hidden;}
 header {visibility: hidden;}
 .stDeployButton {display: none;}
 
-/* Style the streamlit generated h1 header */
-.stMarkdown h1 {
-    color: var(--loyal-blue) !important;
-    text-align: center !important;
-    font-size: 2.5rem !important;
-    font-weight: 700 !important;
-    margin: 2rem 0 !important;
-    padding: 0 !important;
-}
+/* Remove header container styling */
 
 /* Step headers */
 .step-header {
@@ -396,8 +388,12 @@ if 'code_expiry' not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
-# Header - Plain text only, no containers
-st.markdown("# Koramangala Toastmasters Club", unsafe_allow_html=True)
+# Header - Just text, no containers
+st.markdown("""
+<h1 style="color: #004165; text-align: center; font-size: 2.5rem; font-weight: 700; margin: 2rem 0; padding: 0;">
+    Koramangala Toastmasters Club
+</h1>
+""", unsafe_allow_html=True)
 
 # Initialize Google Sheets
 sheet = init_google_sheets()
