@@ -140,10 +140,23 @@ div[data-testid="column"]:last-child button:hover {
     border-width: 3px !important;
     transform: translateY(-4px) scale(1.02) !important;
     box-shadow: 0 8px 24px rgba(119, 36, 50, 0.4) !important;
+}: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--white);
 }
 
-/* Submit button styling */
-.stButton > button {
+.selection-button-content small {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    color: var(--white);
+}
+
+/* Submit button styling - MAROON */
+.stButton > button,
+.stFormSubmitButton > button {
     background: var(--gradient-maroon) !important;
     color: var(--white) !important;
     border: none !important;
@@ -158,10 +171,29 @@ div[data-testid="column"]:last-child button:hover {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
-.stButton > button:hover {
+.stButton > button:hover,
+.stFormSubmitButton > button:hover {
     transform: translateY(-3px) !important;
     box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
     background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
+}
+
+/* Back button styling */
+.stButton > button:not([type="submit"]) {
+    background: transparent !important;
+    color: var(--loyal-blue) !important;
+    border: 1px solid var(--loyal-blue) !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.stButton > button:not([type="submit"]):hover {
+    background: var(--loyal-blue) !important;
+    color: var(--white) !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Success/Error messages */
@@ -276,20 +308,22 @@ div[data-testid="column"]:last-child button:hover {
     padding: 0 !important;
 }
 
-/* Hide the specific markdown container that creates unwanted spacing */
-div[data-testid="stMarkdownContainer"] .main-container {
-    display: none !important;
+/* Column styling for selection buttons */
+.selection-columns {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
 }
 
-/* Ensure main content container is clean */
-.main-content-container {
-    background: var(--white);
-    border-radius: 16px;
-    padding: 2rem;
-    max-width: 440px;
-    margin: 0 auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--cool-gray);
+.selection-column {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .selection-columns {
+        gap: 0.5rem;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -427,9 +461,6 @@ st.markdown(f"""
 sheet = init_google_sheets()
 if not sheet:
     st.stop()
-
-# # Main content container
-# st.markdown('<div class="main-content-container">', unsafe_allow_html=True)
 
 # HOME STEP
 if st.session_state.step == 'home':
@@ -593,5 +624,3 @@ elif st.session_state.step == 'success':
         </a>
     </div>
     """, unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
