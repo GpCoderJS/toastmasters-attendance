@@ -155,7 +155,8 @@ div[data-testid="column"]:last-child button:hover {
 }
 
 /* Submit button styling */
-.stButton > button {
+.stButton > button,
+.stFormSubmitButton > button {
     background: linear-gradient(135deg, #004165 0%, #00527f 100%) !important;
     color: var(--white) !important;
     border: none !important;
@@ -170,7 +171,8 @@ div[data-testid="column"]:last-child button:hover {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
-.stButton > button:hover {
+.stButton > button:hover,
+.stFormSubmitButton > button:hover {
     transform: translateY(-3px) !important;
     box-shadow: 0 8px 20px rgba(0, 65, 101, 0.4) !important;
     background: linear-gradient(135deg, #00527f 0%, #004165 100%) !important;
