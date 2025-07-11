@@ -488,8 +488,8 @@ elif st.session_state.step == 'member_login':
     """, unsafe_allow_html=True)
     
     with st.form("member_form", clear_on_submit=False):
-        phone = st.text_input("📱 Phone Number", placeholder="Enter your registered phone number")
-        submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
+        phone = st.text_input("Phone Number", placeholder="Enter your registered phone number")
+        submitted = st.form_submit_button("Sign In", use_container_width=True)
         
         if submitted:
             if not phone.strip():
@@ -538,9 +538,9 @@ elif st.session_state.step == 'guest_login':
     """, unsafe_allow_html=True)
     
     with st.form("guest_form", clear_on_submit=False):
-        name = st.text_input("👤 Full Name", placeholder="Enter your full name")
-        phone = st.text_input("📱 Phone Number", placeholder="Enter your phone number")
-        submitted = st.form_submit_button("✅ Sign In", use_container_width=True)
+        name = st.text_input("Full Name", placeholder="Enter your full name")
+        phone = st.text_input("Phone Number", placeholder="Enter your phone number")
+        submitted = st.form_submit_button("Sign In", use_container_width=True)
         
         if submitted:
             if not name.strip():
