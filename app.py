@@ -154,8 +154,8 @@ div[data-testid="column"]:last-child button:hover {
     color: var(--white);
 }
 
-/* Submit button styling - MAROON */
-.stFormSubmitButton > button {
+/* Submit button styling */
+.stButton > button {
     background: var(--gradient-maroon) !important;
     color: var(--white) !important;
     border: none !important;
@@ -170,30 +170,10 @@ div[data-testid="column"]:last-child button:hover {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
-.stFormSubmitButton > button:hover {
+.stButton > button:hover {
     transform: translateY(-3px) !important;
     box-shadow: 0 8px 20px rgba(119, 36, 50, 0.4) !important;
     background: linear-gradient(135deg, #8B2635 0%, #772432 100%) !important;
-}
-
-/* Back button styling - only for back buttons */
-div.stButton:has(button:contains("Back")) > button,
-button[key*="back"] {
-    background: transparent !important;
-    color: var(--loyal-blue) !important;
-    border: 1px solid var(--loyal-blue) !important;
-    border-radius: 8px !important;
-    font-size: 0.9rem !important;
-    font-weight: 500 !important;
-    padding: 0.5rem 1rem !important;
-    transition: all 0.2s ease !important;
-}
-
-div.stButton:has(button:contains("Back")) > button:hover,
-button[key*="back"]:hover {
-    background: var(--loyal-blue) !important;
-    color: var(--white) !important;
-    transform: translateY(-1px) !important;
 }
 
 /* Success/Error messages */
