@@ -597,7 +597,7 @@ elif st.session_state.step == 'success':
             You've been successfully marked present for today's meeting.
         </div>
         """, unsafe_allow_html=True)
-    rating = st_star_rating(label = "Please rate you experience", maxValue = 5, defaultValue = 3, key = "rating", emoticons = True )
+    rating = st_star_rating("Please rate todays meeting", maxValue=5, defaultValue=3, key="rating",dark_theme="True")
     rating_sheet = sheet.worksheet("rating")
     timestamp = datetime.now(ist).strftime("%Y-%m-%d")
     rating_sheet.append_row([timestamp, st.session_state.user_name,rating])
