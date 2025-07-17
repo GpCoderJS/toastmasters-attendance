@@ -2,7 +2,7 @@ import streamlit as st
 import gspread
 from datetime import datetime, timedelta
 from google.oauth2.service_account import Credentials
-from streamlit_star_rating import st_star_rating
+# from streamlit_star_rating import st_star_rating
 import random
 import string
 import base64
@@ -597,11 +597,77 @@ elif st.session_state.step == 'success':
             You've been successfully marked present for today's meeting.
         </div>
         """, unsafe_allow_html=True)
-    rating = st_star_rating("Please rate todays meeting", maxValue=5, defaultValue=3, key="rating",dark_theme="True")
-    rating_sheet = sheet.worksheet("rating")
-    timestamp = datetime.now(ist).strftime("%Y-%m-%d")
-    rating_sheet.append_row([timestamp, st.session_state.user_name,rating])
-    # Voting link section
+        # Add custom CSS for the rating buttons
+    st.markdown("""
+    <style>
+    /* Rating button styling */
+    div[data-testid="column"] button[kind="secondary"] {
+        background-color: #A9B2B1 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        height: 80px !important;
+        width: 100% !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        white-space: pre-line !important;
+        text-align: center !important;
+        transition: all 0.3s ease !important;
+        line-height: 1.3 !important;
+    }
+
+    div[data-testid="column"] button[kind="secondary"]:hover {
+        background-color: #8a9695 !important;
+        transform: translateY(-2px) !important;
+    }
+
+    /* Fix success message color */
+    .stAlert > div {
+        color: #004165 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Blue heading
+    st.markdown('<div style="font-size: 18px; color: #004165; font-weight: 600; text-align: center; margin-bottom: 20px;">Please rate today\'s meeting</div>', unsafe_allow_html=True)
+
+    # Create 5 columns for the rating boxes
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    # Initialize rating if not exists
+    if 'user_rating' not in st.session_state:
+        st.session_state.user_rating = None
+
+    with col1:
+        if st.button("1\n\nPoor", key="rating_1", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 1
+
+    with col2:
+        if st.button("2\n\nFair", key="rating_2", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 2
+
+    with col3:
+        if st.button("3\n\nGood", key="rating_3", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 3
+
+    with col4:
+        if st.button("4\n\Super", key="rating_4", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 4
+
+    with col5:
+        if st.button("5\n\nExcellent", key="rating_5", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 5
+
+    # Save to sheet when rating is selected
+    if st.session_state.user_rating and 'rating_saved' not in st.session_state:
+        try:
+            rating_sheet = sheet.worksheet("rating")
+            timestamp = datetime.now(ist).strftime("%Y-%m-%d")
+            rating_sheet.append_row([timestamp, st.session_state.user_name, st.session_state.user_rating])
+            st.session_state.rating_saved = True
+            st.markdown('<div style="color: #004165; background: rgba(16, 185, 129, 0.1); border: 1px solid #10B981; padding: 1rem; border-radius: 8px; text-align: center; margin: 1rem 0;">Thanks for rating!</div>', unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Error saving rating: {str(e)}")
     st.markdown("""
     <div class="voting-link-container">
         <a href="https://forms.gle/eEFE3ZdZSMK6Vdf5A" 
