@@ -2,6 +2,7 @@ import streamlit as st
 import gspread
 from datetime import datetime, timedelta
 from google.oauth2.service_account import Credentials
+from streamlit_star_rating import st_star_rating
 import random
 import string
 import base64
@@ -516,7 +517,7 @@ elif st.session_state.step == 'member_login':
                     
                     if matched:
                         name = matched["Name"]
-                        timestamp = datetime.now(ist).strftime("%Y-%m-%d %H:%M:%S")
+                        timestamp = datetime.now(ist).strftime("%Y-%m-%d")
                         today = datetime.now(ist).strftime("%Y-%m-%d")
                         
                         # Log in flat Attendance sheet
@@ -563,7 +564,7 @@ elif st.session_state.step == 'guest_login':
                 st.markdown('<div class="error-message">❌ Please enter your phone number.</div>', unsafe_allow_html=True)
             else:
                 try:
-                    timestamp = datetime.now(ist).strftime("%Y-%m-%d %H:%M:%S")
+                    timestamp = datetime.now(ist).strftime("%Y-%m-%d")
                     
                     # Log in Attendance sheet
                     attendance_sheet = sheet.worksheet("Attendance")
@@ -596,7 +597,10 @@ elif st.session_state.step == 'success':
             You've been successfully marked present for today's meeting.
         </div>
         """, unsafe_allow_html=True)
-    
+    rating = st_star_rating(label = "Please rate you experience", maxValue = 5, defaultValue = 3, key = "rating", emoticons = True )
+    rating_sheet = sheet.worksheet("rating")
+    timestamp = datetime.now(ist).strftime("%Y-%m-%d")
+    rating_sheet.append_row([timestamp, st.session_state.user_name,rating])
     # Voting link section
     st.markdown("""
     <div class="voting-link-container">
