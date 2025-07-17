@@ -651,7 +651,7 @@ elif st.session_state.step == 'success':
             st.session_state.user_rating = 3
 
     with col4:
-        if st.button("4\n\Super", key="rating_4", use_container_width=True, type="secondary"):
+        if st.button("4\n\nSuper", key="rating_4", use_container_width=True, type="secondary"):
             st.session_state.user_rating = 4
 
     with col5:
