@@ -638,25 +638,47 @@ elif st.session_state.step == 'success':
     if 'user_rating' not in st.session_state:
         st.session_state.user_rating = None
 
+
     with col1:
-        if st.button("1\n\nPoor", key="rating_1", use_container_width=True, type="secondary"):
-            st.session_state.user_rating = 1
+        if st.button("5\n\nExcellent", key="rating_5", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 5
+
 
     with col2:
-        if st.button("2\n\nFair", key="rating_2", use_container_width=True, type="secondary"):
-            st.session_state.user_rating = 2
+        if st.button("4\n\nSuper", key="rating_4", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 4
 
     with col3:
         if st.button("3\n\nGood", key="rating_3", use_container_width=True, type="secondary"):
             st.session_state.user_rating = 3
 
     with col4:
-        if st.button("4\n\nSuper", key="rating_4", use_container_width=True, type="secondary"):
-            st.session_state.user_rating = 4
+        if st.button("2\n\nFair", key="rating_2", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 2
 
     with col5:
-        if st.button("5\n\nExcellent", key="rating_5", use_container_width=True, type="secondary"):
-            st.session_state.user_rating = 5
+        if st.button("1\n\nPoor", key="rating_1", use_container_width=True, type="secondary"):
+            st.session_state.user_rating = 1
+
+    # with col1:
+    #     if st.button("1\n\nPoor", key="rating_1", use_container_width=True, type="secondary"):
+    #         st.session_state.user_rating = 1
+
+    # with col2:
+    #     if st.button("2\n\nFair", key="rating_2", use_container_width=True, type="secondary"):
+    #         st.session_state.user_rating = 2
+
+    # with col3:
+    #     if st.button("3\n\nGood", key="rating_3", use_container_width=True, type="secondary"):
+    #         st.session_state.user_rating = 3
+
+    # with col4:
+    #     if st.button("4\n\nSuper", key="rating_4", use_container_width=True, type="secondary"):
+    #         st.session_state.user_rating = 4
+
+    # with col5:
+    #     if st.button("5\n\nExcellent", key="rating_5", use_container_width=True, type="secondary"):
+    #         st.session_state.user_rating = 5
 
     # Save to sheet when rating is selected
     if st.session_state.user_rating and 'rating_saved' not in st.session_state:
